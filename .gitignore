@@ -1,0 +1,8 @@
+*.un~
+*.swo
+*.swp
+*.crx
+*.js
+*.sublime*
+node_modules/*
+dist
