@@ -1,4 +1,6 @@
 *.un~
+*.clj~
+*.cljs~
 *.swo
 *.swp
 *.crx
@@ -6,3 +8,7 @@
 *.sublime*
 node_modules/*
 dist
+target/
+repl/
+art/
+out/
