@@ -5,3 +5,4 @@
 
 (defn add-some-numbers [& numbers]
   (apply + numbers))
+

@@ -12,3 +12,4 @@ target/
 repl/
 art/
 out/
+resource/*.js

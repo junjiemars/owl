@@ -18,8 +18,8 @@
     [:body
       [:h1 "Owl, Hello"]
       (run-clojurescript
-        "/js/main.js" ;"/js/main-debug.js"
-        "owl.web.say_hello()")]))
+        "main-dev.js" 
+        "owl.web.core.say_hello()")]))
 
 (defn repl-demo-page []
   (html5
@@ -46,5 +46,5 @@ lein trampoline cljsbuild repl-listen"]
 > (load-namespace 'goog.dom)
 > (goog.dom.setTextContent (goog.dom.getElement \"fun\") \"I changed something....\") "]
       (run-clojurescript
-        "/js/main-debug.js"
+        "main-dev.js"
         "owl.repl.connect()")))

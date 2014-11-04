@@ -10,7 +10,10 @@
 (defroutes main-routes
   (GET "/" [] (index-page))
   (GET "/repl-demo" [] (repl-demo-page))
-  ;(route/art "/")
+  (GET "/:id" [id] (str "<h1>Hello,"
+                        (str id)
+                        "</h1>"))
+  (route/resources "/")
   (route/not-found "Page not found"))
 
 (def app

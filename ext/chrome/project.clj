@@ -1,6 +1,6 @@
 (defproject owl-web "0.0.1"
   :description "Owl web front"
-  :source-paths ["src-clj"]
+  :source-paths ["src/clj" "src/cljs"]
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2371"
                   :exclusions [org.apache.ant/ant]]
@@ -12,10 +12,12 @@
   :cljsbuild {
     :repl-listen-port 9000
     :builds {
-             :dev {:source-paths ["src-cljs"]
-                   :compiler {:output-to "art/js/main.js"
-                              :optimizations :whitespace
-                              :pretty-print true}}}
+             :dev {
+               :source-paths ["src/cljs"]
+               :compiler {
+                 :output-to "resources/main-dev.js"
+                 :optimizations :whitespace
+                 :pretty-print true}}}
              }
   :ring {:handler owl.routes/app}
   )
