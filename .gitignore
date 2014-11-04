@@ -12,4 +12,4 @@ target/
 repl/
 art/
 out/
-resource/*.js
+resource/public/*.js

@@ -8,11 +8,8 @@
   (:gen-class))
 
 (defroutes main-routes
-  (GET "/" [] (index-page))
+  (GET "/" [] "<p>Hello,Owl is cOOl!</p>");;(index-page))
   (GET "/repl-demo" [] (repl-demo-page))
-  (GET "/:id" [id] (str "<h1>Hello,"
-                        (str id)
-                        "</h1>"))
   (route/resources "/")
   (route/not-found "Page not found"))
 

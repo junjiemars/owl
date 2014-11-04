@@ -7,7 +7,7 @@
                  [compojure "1.1.6"]
                  [hiccup "1.0.5"]]
   :plugins [[lein-cljsbuild "1.0.3"]
-            [lein-ring "0.8.7"]]
+            [lein-ring "0.8.8"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {
     :repl-listen-port 9000
@@ -15,7 +15,7 @@
              :dev {
                :source-paths ["src/cljs"]
                :compiler {
-                 :output-to "resources/main-dev.js"
+                 :output-to "resources/public/main-dev.js"
                  :optimizations :whitespace
                  :pretty-print true}}}
              }
