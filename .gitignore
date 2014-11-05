@@ -13,3 +13,5 @@ repl/
 art/
 out/
 resource/public/*.js
+ext/chrome/.lein-repl-history
+ext/chrome/.nrepl-port

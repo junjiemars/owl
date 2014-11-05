@@ -47,4 +47,4 @@ lein trampoline cljsbuild repl-listen"]
 > (goog.dom.setTextContent (goog.dom.getElement \"fun\") \"I changed something....\") "]
       (run-clojurescript
         "main-dev.js"
-        "owl.repl.connect()")))
+        "owl.web.connect.connect()")))
