@@ -1,4 +1,4 @@
-(ns owl.views
+>(ns owl.web.views
   (:require
     [hiccup
       [page :refer [html5]]
@@ -47,4 +47,4 @@ lein trampoline cljsbuild repl-listen"]
 > (goog.dom.setTextContent (goog.dom.getElement \"fun\") \"I changed something....\") "]
       (run-clojurescript
         "main-dev.js"
-        "owl.web.connect.connect()")))
+        "owl.web.repl.init()")))

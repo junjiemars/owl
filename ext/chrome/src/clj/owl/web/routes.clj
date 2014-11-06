@@ -1,6 +1,6 @@
-(ns owl.routes
+(ns owl.web.routes
   (:use compojure.core
-        owl.views
+        owl.web.views
         [hiccup.middleware :only (wrap-base-url)])
   (:require [compojure.route :as route]
             [compojure.handler :as handler]

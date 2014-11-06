@@ -10,7 +10,7 @@
                  ]
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-ring "0.8.13"]
-            [hiccup-bridge "1.0.1"]
+            ;[hiccup-bridge "1.0.1"]
             ]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {
@@ -29,5 +29,5 @@
                  :optimizations :advanced
                  :pretty-print false}}}
              }
-  :ring {:handler owl.routes/app}
+  :ring {:handler owl.web.routes/app}
   )
