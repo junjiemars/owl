@@ -13,7 +13,8 @@
         passwd (by-id "password")]
     (if (and (> (count (value email)) 0)
              (> (count (value passwd)) 0))
-      true
+      (do (.log js/console "gOOd!")
+          true)
       (do (.log js/console "please complete the form")
           false))))
 

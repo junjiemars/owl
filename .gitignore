@@ -12,6 +12,6 @@ target/
 repl/
 art/
 out/
-resource/public/*.js
+resources/public/js/*
 ext/chrome/.lein-repl-history
 ext/chrome/.nrepl-port
