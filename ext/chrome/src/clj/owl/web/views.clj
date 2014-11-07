@@ -19,7 +19,7 @@
       [:h1 "Owl, Hello"]
       (run-clojurescript
         "main-dev.js" 
-        "owl.web.core.say_hello()")]))
+        "owl.web.repl.init()")]))
 
 (defn repl-demo-page []
   (html5

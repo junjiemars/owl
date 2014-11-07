@@ -22,7 +22,6 @@
   (if (and js/document
            (.-getElementById js/document))
     (let [login (by-id "login_form")]
-      (ev/listen! (by-id "submit") :click validate-form))))
+      (ev/listen! (by-id "submit") :click validate-form)
+      (owl.web.repl.init))))
       ;(set! (.-onsubmit login) validate-form))))
-
-
