@@ -16,12 +16,17 @@
 
 (defn on-proxy-uri-change! [event]
   (let [e event]
-    (.log js/console e)))
+    (.log js/console e)
+    (.log js/console (.getBackgroundPage js/chrome.extension))))
 
-(defn on-doc-ready []
+(defn on-doc-ready
+  []
   (let [ready-state (.-readyState js/document)]
-    (if (= "complete" ready-state)
-      (do (set-options-link! "resources/public/options.html")
+    (if (and (= "complete" ready-state)
+             (by-id "popup"))
+      (do 
+          (.log js/console "#popup:on-doc-ready")
+          (set-options-link! "resources/public/options.html")
           (set-proxy-uri! "http://localhost:9001")
           (ev/listen! (by-id "proxy_uri") :onchange on-proxy-uri-change!)
         true)
