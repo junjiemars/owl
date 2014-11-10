@@ -5,5 +5,6 @@
   (repl/connect "http://localhost:9000/repl"))
 
 (defn ^:export init []
-  (.log js/console "inited....")
-  (connect))
+  (do (connect)
+      (.log js/console "inited owl.web.repl/init")
+      true))
