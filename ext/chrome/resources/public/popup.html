@@ -8,7 +8,7 @@
 
       #popup { width: 500px; }
 
-      #excludeControls {
+      #popup_proxy {
         padding: 10px;
       }
 
@@ -24,13 +24,13 @@
         display: none;
       }
 
-      #popupButton { margin-left: 10px; }
+      #proxy_run { margin-left: 10px; }
 
-      #popupMenu ul {
+      #popup_links ul {
         list-style: none;
       }
 
-      #popupMenu a, #popupMenu a:active, #popupMenu a:visited {
+      #popup_links a, #popup_links a:active, #popup_links a:visited {
         color: #3F6EC2;
         display: block;
         border-top: 1px solid #DDDDDD;
@@ -38,38 +38,32 @@
         padding-left: 10px;
       }
 
-      #popupMenu a:hover {
+      #popup_links a:hover {
         background: #EEEEEE;
       }
 
-      #options_link {
+      #popup_links ul li {
+        float: left;
+      }
+      
+      #options_link #echo_link {
         font-family : "Helvetica Neue", "Helvetica", "Arial", sans-serif;
         font-size: 12px;
       }
     </style>
-    <!--
-    <script src="popup.js"></script>
-    -->
-
   </head>
   <body>
     <div id="popup">
-      <!--
-      <div id="excludeControls">
-        <input id="popupInput" type="text" />
-        <input id="popupButton" type="button" value="Exclude URL" />
-        <span id="excludeConfirm">Saved.</span>
-      </div>
-      -->
-
-      <div id="excludeControls">
+      <div id="popup_proxy">
 	<label for="proxy_uri">Proxy URI:</label>
 	<input id="proxy_uri" type="text" />
+        <input id="proxy_run" type="button" value="Run" />
       </div>
 
-      <div id="popupMenu">
+      <div id="popup_links">
         <ul>
           <li><a id="options_link" target="_blank">Options</a></li>
+	  <li><a id="echo_link" target="_black">Echo</a></li>
         </ul>
       </div>
     </div>
