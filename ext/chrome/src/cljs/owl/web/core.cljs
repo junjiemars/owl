@@ -1,6 +1,7 @@
 (ns owl.web.core
   (:use [domina :only [by-id value set-value!]])
-  (:require [domina.events :as ev]))
+  (:require [domina.events :as ev]
+  ))
 
 (defn say-hello []
   (js/alert "Hello, ClojureScript!"))
