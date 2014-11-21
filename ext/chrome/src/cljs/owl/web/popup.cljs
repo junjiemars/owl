@@ -11,13 +11,23 @@
     (set-value! (by-id "proxy_uri")
                 (if (> (count s) 0) s u))))
 
+(defn set-chrome-proxy! [uri]
+  (let [c {:mode "fixed_servers"
+           :rules {:proxyForHttp {:scheme "socks5"
+                                 :host uri}}}]
+    (.set js/chrome.proxy.settings
+          {:value c :scope "regular"}
+          #(.log js/console (str "####" %)))))
+
 (defn on-proxy-run []
-  (.log js/console "begin run proxy")
-  (.setItem js/localStorage
-            :proxy_uri
-            (value (by-id "proxy_uri")))
-  (.getSelected js/chrome.tabs
-                (fn [t] (.log js/console t.url))))
+  (let [uri (value (by-id "proxy_uri"))]
+    (.log js/console "begin run proxy")
+    (.setItem js/localStorage
+              :proxy_uri
+              uri)
+    (.getSelected js/chrome.tabs
+                  (fn [t] (.log js/console t.url)))
+    (set-chrome-proxy! uri)))
 
 (defn on-doc-ready
   []
