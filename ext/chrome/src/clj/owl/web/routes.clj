@@ -15,6 +15,6 @@
   (route/resources "/")
   (route/not-found "<h1>Page not found</h1>"))
 
-(def app
+(def application
   (-> (handler/site main-routes)
       (wrap-base-url)))
