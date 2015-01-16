@@ -2,7 +2,7 @@
   :description "Owl web front"
   :source-paths ["src/clj" "src/cljs" "src/brepl"]
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2371"
+                 [org.clojure/clojurescript "0.0-2665"
                   :exclusions [org.apache.ant/ant]]
                  [compojure "1.2.1"]
                  [hiccup "1.0.5"]
@@ -29,7 +29,8 @@
                  :optimizations :advanced
                  :pretty-print false}}}
              }
-  :ring {:handler owl.web.routes/application}
-  )
+  :ring {:handler owl.web.routes/application
+         #_ (:nrepl {:start? true
+                     :port 2999})})
 
 

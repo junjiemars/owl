@@ -5,6 +5,12 @@ Owl - Web front
 
 Owl - Web front is a Chrome extension that provides http/https requests interception.
 
+REPL
+-----------------
+1) lein ring server-headless
+2) lein trampoline cljsbuild repl-listen
+3) refresh browser http://localhost:3000/dev.html
+
 NOTE
 ------------------
 Owl - Web front based on Vimium of Phil Crosby, Ilya Sukhar, you can check there:
