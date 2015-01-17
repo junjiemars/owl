@@ -1,7 +1,8 @@
 (ns owl.web.views
   (:require [hiccup
              [page :refer [html5 include-js]]
-             [element :refer [javascript-tag]]])
+             [element :refer [javascript-tag]]]
+            [net.cgrand.enlive-html :as enlive])
   (:gen-class))
 
 (defn- run-clojurescript [path init]
@@ -33,6 +34,7 @@ lein trampoline cljsbuild repl-listen"]
 > (.log js/console (reduce + [1 2 3 4 5]))
 > (load-namespace 'goog.dom)
 > (goog.dom.setTextContent (goog.dom.getElement \"fun\") \"I changed something....\") "]
-      (run-clojurescript
+      #_ ((run-clojurescript
             "main-dev.js"
-            "owl.web.brepl.init()")))
+            "owl.web.brepl.init()"))
+      [:script (browser-connected-repl-js)]))

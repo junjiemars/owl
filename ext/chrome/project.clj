@@ -7,6 +7,7 @@
                  [compojure "1.2.1"]
                  [ring/ring-defaults "0.1.3"]
                  [hiccup "1.0.5"]
+                 [enlive "1.1.5"]
                  [domina "1.0.3"]
                  ]
   :plugins [[lein-cljsbuild "1.0.3"]
@@ -17,8 +18,12 @@
   :ring {:handler owl.web.routes/app
          :init owl.web.routes/init
          :destroy owl.web.routes/destroy}
-  :profiles {:dev {;:plugins [[com.cemerick/austin "0.1.6"]]
-                   :repl-options {:repl-listen-port 9000}
+  :profiles {:dev {:plugins [[com.cemerick/austin "0.1.6"]]
+                   :dependencies [
+                                  #_ ([ring/ring-jetty-adapter "1.3.2"
+                                       :exclusions [ring/ring-core]])]
+                   :repl-options {;:repl-listen-port 9000
+                                  :init-ns owl.web.brepl}
                    :cljsbuild {:builds
                                [{:source-paths ["src/cljs" "src/brepl"]
                                  :compiler {:output-to

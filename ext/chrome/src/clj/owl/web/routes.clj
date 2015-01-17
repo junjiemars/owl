@@ -1,8 +1,8 @@
 (ns owl.web.routes
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]])
-  (:require [owl.web.views :as v])
+            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+            [owl.web.views :as v])
   (:gen-class))
 
 (defn init []
@@ -18,3 +18,5 @@
 
 (def app
   (wrap-defaults app-routes site-defaults))
+
+
