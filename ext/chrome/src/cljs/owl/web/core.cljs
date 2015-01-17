@@ -1,7 +1,7 @@
 (ns owl.web.core
   (:use [domina :only [by-id value set-value!]])
   (:require [domina.events :as ev]
-  ))
+            [owl.web.brepl :as brepl]))
 
 (defn say-hello []
   (js/alert "Hello, ClojureScript!"))
@@ -24,5 +24,5 @@
            (.-getElementById js/document))
     (let [login (by-id "login_form")]
       (ev/listen! (by-id "submit") :click validate-form)
-      (owl.web.repl.init))))
+      (brepl/init))))
       ;(set! (.-onsubmit login) validate-form))))

@@ -1,4 +1,4 @@
-(ns owl.web.repl
+(ns owl.web.brepl
   (:require [clojure.browser.repl :as repl]))
 
 (defn connect []
@@ -6,5 +6,5 @@
 
 (defn ^:export init []
   (do (connect)
-      (.log js/console "inited owl.web.repl")
+      (.log js/console "#inited owl.web.brepl")
       true))

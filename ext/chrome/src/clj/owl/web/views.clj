@@ -1,9 +1,7 @@
->(ns owl.web.views
-  (:require
-    [hiccup
-      [page :refer [html5]]
-      [element :refer [javascript-tag]]
-      [page :refer [include-js]]])
+(ns owl.web.views
+  (:require [hiccup
+             [page :refer [html5 include-js]]
+             [element :refer [javascript-tag]]])
   (:gen-class))
 
 (defn- run-clojurescript [path init]
@@ -11,27 +9,17 @@
     (include-js path)
     (javascript-tag init)))
 
-(defn index-page []
-  (html5
-    [:head
-      [:title "Owl - Web Front"] ]
-    [:body
-      [:h1 "Owl, Hello"]
-      (run-clojurescript
-        "main-dev.js" 
-        "owl.web.repl.init()")]))
-
 (defn repl-demo-page []
   (html5
     [:head
-      [:title "REPL Demo"]]
+      [:title "OWL -REPL Demo"]]
     [:body
       [:h1 "REPL Demo"]
       [:hr]
       "This page is meant to be accessed by running this in one terminal:"
       [:pre "lein ring server-headless 3000"]
       "And then this in a different terminal:"
-      [:pre "lein trampoline cljsbuild repl-launch firefox http://localhost:3000/repl-demo"]
+      [:pre "lein trampoline cljsbuild repl-launch http://localhost:3000/repl"]
       [:hr]
       "Alternately, you can run:"
       [:pre "lein ring server-headless 3000 &
@@ -46,5 +34,5 @@ lein trampoline cljsbuild repl-listen"]
 > (load-namespace 'goog.dom)
 > (goog.dom.setTextContent (goog.dom.getElement \"fun\") \"I changed something....\") "]
       (run-clojurescript
-        "main-dev.js"
-        "owl.web.repl.init()")))
+            "main-dev.js"
+            "owl.web.brepl.init()")))

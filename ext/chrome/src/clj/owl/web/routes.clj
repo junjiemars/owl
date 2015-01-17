@@ -1,20 +1,20 @@
 (ns owl.web.routes
-  (:use compojure.core
-        owl.web.views
-        [hiccup.middleware :only (wrap-base-url)])
-  (:require [compojure.route :as route]
-            [compojure.handler :as handler]
-            [compojure.response :as response])
+  (:require [compojure.core :refer :all]
+            [compojure.route :as route]
+            [ring.middleware.defaults :refer [wrap-defaults site-defaults]])
+  (:require [owl.web.views :as v])
   (:gen-class))
 
-(defroutes main-routes
-  (GET "/" [] "<p>Hello,Owl is cOOl!</p>");;(index-page))
-  ;(GET "/" request (str request))
-  ;(GET "/:id" [id] (str "Hello," id "!"))
-  (GET "/repl-demo" [] (repl-demo-page))
-  (route/resources "/")
+(defn init []
+  (println "#init lein ring..."))
+
+(defn destroy []
+  (println "#destroy lein ring..."))
+
+(defroutes app-routes
+  (GET "/" [] "<p>Hello,Owl is cOOl!</p>")
+  (GET "/repl" [] (v/repl-demo-page))
   (route/not-found "<h1>Page not found</h1>"))
 
 (def app
-  (-> (handler/site main-routes)
-      (wrap-base-url)))
+  (wrap-defaults app-routes site-defaults))
