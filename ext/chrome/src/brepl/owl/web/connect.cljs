@@ -6,5 +6,5 @@
 
 (defn ^:export init []
   (do (connect)
-      (.log js/console "inited owl.web.repl/init")
+      (.log js/console "inited owl.web.repl")
       true))

@@ -9,7 +9,8 @@
                  [domina "1.0.3"]
                  ]
   :plugins [[lein-cljsbuild "1.0.3"]
-            [lein-ring "0.9.0" #_ ("0.8.13")]
+            [lein-ring "0.9.0" #_ ("0.8.13")
+             :exclusions [org.clojure/clojure]]
             ;[hiccup-bridge "1.0.1"]
             ]
   :hooks [leiningen.cljsbuild]
@@ -29,8 +30,6 @@
                  :optimizations :advanced
                  :pretty-print false}}}
              }
-  :ring {:handler owl.web.routes/application
-         #_ (:nrepl {:start? true
-                     :port 2999})})
+  :ring {:handler owl.web.routes/app})
 
 
