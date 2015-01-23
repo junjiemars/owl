@@ -18,3 +18,4 @@ ext/chrome/.nrepl-port
 ext/chrome/hicv/*
 *.*~
 
+.repl/
