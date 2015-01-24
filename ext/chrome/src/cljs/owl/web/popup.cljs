@@ -17,10 +17,11 @@
 (defn save-proxy-uri [uri]
   (.setItem js/localStorage :proxy_uri uri))
 
-(defn switch-proxy! [s]
-  (swap! s #(bit-xor @s 1))
-  (let [id (by-id "proxy_run")]
-    (if (zero? s)
+(defn switch-proxy! []
+  (let [ps proxy-switch
+        id (by-id "proxy_run")]
+    (reset! ps (bit-xor @ps 1))
+    (if (zero? @ps)
       (set-value! id "Run ")
       (set-value! id "Stop "))))
 
@@ -56,7 +57,7 @@
   (when-let [uri (value (by-id "proxy_uri"))]
     (.preventDefault e.evt)
     (.stopPropagation e.evt)
-    (switch-proxy! proxy-switch)
+    (switch-proxy!)
     (if (not (zero? @proxy-switch))
       (do (save-proxy-uri uri)
           (.getSelected js/chrome.tabs
@@ -64,14 +65,13 @@
           (apply-proxy-settings! uri))
       (clear-proxy-settings!))))
 
-(defn on-doc-ready
-  []
+(defn on-doc-ready []
   (when-let [ready-state (.-readyState js/document)]
     (if (and (= "complete" ready-state)
              (by-id "popup"))
       (do 
           (.log js/console "#popup:on-doc-ready")
-          (set-link! "options_link" "resources/public/options.html")
+          (set-link! "options_link" "options.html")
           (set-link! "echo_link" "resources/public/echo.html")
           (load-proxy-uri "http://localhost:9001")
           (ev/listen! (by-id "proxy_run") :click on-proxy-run)
