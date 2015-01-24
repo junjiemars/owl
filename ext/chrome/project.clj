@@ -7,7 +7,6 @@
                  [compojure "1.2.1"]
                  [ring/ring-defaults "0.1.3"]
                  [hiccup "1.0.5"]
-                 [enlive "1.1.5"]
                  [domina "1.0.3"]
                  ]
   :plugins [[lein-cljsbuild "1.0.3"]

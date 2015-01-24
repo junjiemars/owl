@@ -52,7 +52,7 @@
 
 (defn on-doc-ready
   []
-  (let [ready-state (.-readyState js/document)]
+  (when-let [ready-state (.-readyState js/document)]
     (if (and (= "complete" ready-state)
              (by-id "popup"))
       (do 
@@ -65,3 +65,4 @@
       false)))
 
 (set! (.-onreadystatechange js/document) on-doc-ready)
+
