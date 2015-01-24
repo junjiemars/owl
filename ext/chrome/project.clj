@@ -15,15 +15,14 @@
              :exclusions [org.clojure/clojure]]
             ]
   :hooks [leiningen.cljsbuild]
-  :ring {:handler owl.web.routes/app
-         :init owl.web.routes/init
-         :destroy owl.web.routes/destroy}
   :profiles {:dev {:plugins []
                    :dependencies []
-                   :repl-options {:repl-listen-port 9000
-                                  :init-ns owl.web.brepl}
+                   :ring {:handler owl.web.routes/app
+                          :init owl.web.routes/init
+                          :destroy owl.web.routes/destroy
+                          :repl-options {:repl-listen-port 9000}}
                    :cljsbuild {:builds
-                               [{:source-paths ["src/cljs" "src/brepl"]
+                               [{:source-paths ["src/brepl" "src/cljs"]
                                  :compiler {:output-to
                                             "resources/public/js/main-dev.js"
                                             :optimizations :whitespace
