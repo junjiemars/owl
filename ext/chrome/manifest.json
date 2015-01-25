@@ -20,6 +20,7 @@
     "storage",
     "proxy",
     "webRequest",
+    "debugger",
     "<all_urls>"
   ],
   "content_scripts": [

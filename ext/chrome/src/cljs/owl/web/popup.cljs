@@ -1,9 +1,19 @@
 (ns owl.web.popup
-  (:use [domina :only [by-id value set-value! set-attr!]])
+  (:use [domina :only [by-id value
+                       set-value!
+                       set-attr!
+                       set-text!]])
   (:require [domina.events :as ev]))
 
 (defonce ^:export proxy-settings (atom {}))
-(defonce ^:export proxy-switch (atom 0))
+(defonce ^:export proxy-switch (atom false))
+(defonce ^:export proxy-types {:raw [:auto_detect
+                                     :pac_script
+                                     :direct
+                                     :fixed_servers
+                                     :system]
+                               :run ["pac_script"
+                                     "fixed_servers"]})
 
 (defn set-link! [id uri]
   (set-attr! (by-id id) :href (.getURL js/chrome.runtime uri)))
@@ -18,19 +28,33 @@
   (.setItem js/localStorage :proxy_uri uri))
 
 (defn switch-proxy! []
-  (let [ps proxy-switch
-        id (by-id "proxy_run")]
-    (reset! ps (bit-xor @ps 1))
-    (if (zero? @ps)
-      (set-value! id "Run ")
-      (set-value! id "Stop "))))
+  (let [g (clj->js {:incognito false})]
+    (.get js/chrome.proxy.settings
+          g (fn [d]
+              (let [c (js->clj d :keywordize-keys true)
+                    m (:mode (:value c))
+                    b (by-id "proxy_run")
+                    i (by-id "proxy_indicator")]
+                (.log js/console c)
+                (.log js/console m)
+                (if (some #(= m %) (:run proxy-types))
+                  (do
+                    (set-text! i "&#x25f7;")
+                    (set-value! b "Stop ")
+                    (reset! proxy-switch true))
+                  (do
+                    (set-text! i "")
+                    (set-value! b "Run ")
+                    (reset! proxy-switch false))))))))
 
-(defn apply-proxy-settings! [uri]
+(defn apply-proxy-settings! [e]
   (let [c {:mode "fixed_servers"
-           :rules {:singleProxy {:scheme "socks4"
+           :rules {:singleProxy {:scheme "socks5"
                                   :host "localhost"
                                   :port 11032}}}
         d (clj->js {:value c :scope "regular"})]
+    (.preventDefault e.evt)
+    (.stopPropagation e.evt)
     (.set js/chrome.proxy.settings
           d
           (fn [s]
@@ -53,17 +77,14 @@
           (clj->js m)
           (fn [] (.log js/console "#restored")))))
 
-(defn on-proxy-run [e]
-  (when-let [uri (value (by-id "proxy_uri"))]
-    (.preventDefault e.evt)
-    (.stopPropagation e.evt)
-    (switch-proxy!)
-    (if (not (zero? @proxy-switch))
-      (do (save-proxy-uri uri)
-          (.getSelected js/chrome.tabs
-                        (fn [t] (.log js/console t.url)))
-          (apply-proxy-settings! uri))
-      (clear-proxy-settings!))))
+(defn on-proxy-run! [e]
+  (let [s @proxy-switch]
+    (if (true? s)
+      (do
+        (clear-proxy-settings!))
+      (do
+        (apply-proxy-settings! e)))
+    (switch-proxy!)))
 
 (defn on-doc-ready []
   (when-let [ready-state (.-readyState js/document)]
@@ -71,10 +92,11 @@
              (by-id "popup"))
       (do 
           (.log js/console "#popup:on-doc-ready")
+          (switch-proxy!)
           (set-link! "options_link" "options.html")
           (set-link! "echo_link" "resources/public/echo.html")
           (load-proxy-uri "http://localhost:9001")
-          (ev/listen! (by-id "proxy_run") :click on-proxy-run)
+          (ev/listen! (by-id "proxy_run") :click on-proxy-run!)
         true)
       false)))
 
