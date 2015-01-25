@@ -1,11 +1,17 @@
 (ns owl.web.popup
-  (:use [domina :only [by-id value
+  (:use [domina :only [by-id
+                       value
                        set-value!
                        set-attr!
                        set-text!]])
   (:require [domina.events :as ev]))
 
-(defonce ^:export proxy-settings (atom {}))
+(defonce ^:export proxy-settings (atom {:value {:mode "fixed_servers"
+                                                :rules {:singleProxy
+                                                        {:scheme "socks5"
+                                                         :host "localhost"
+                                                         :port 11032}}}
+                                        :scope "regular"}))
 (defonce ^:export proxy-switch (atom false))
 (defonce ^:export proxy-types {:raw [:auto_detect
                                      :pac_script
@@ -14,6 +20,8 @@
                                      :system]
                                :run ["pac_script"
                                      "fixed_servers"]})
+
+(declare make-proxy-settings!)
 
 (defn set-link! [id uri]
   (set-attr! (by-id id) :href (.getURL js/chrome.runtime uri)))
@@ -48,19 +56,14 @@
                     (reset! proxy-switch false))))))))
 
 (defn apply-proxy-settings! [e]
-  (let [c {:mode "fixed_servers"
-           :rules {:singleProxy {:scheme "socks5"
-                                  :host "localhost"
-                                  :port 11032}}}
-        d (clj->js {:value c :scope "regular"})]
+  (let [c (make-proxy-settings! (value (by-id "proxy_uri")))
+        d (clj->js c)]
     (.preventDefault e.evt)
     (.stopPropagation e.evt)
+    (.log js/console d)
     (.set js/chrome.proxy.settings
-          d
-          (fn [s]
-            (.log js/console (js->clj s))
-            (swap! proxy-settings
-                   (fn [v] (conj v (js->clj proxy-settings))))))
+          d (fn [s]
+              (.log js/console (js->clj s))))
     (.sendRequest js/chrome.extension {:type "clearError"})))
 
 (defn clear-proxy-settings! []
@@ -76,6 +79,15 @@
     (.set js/chrome.proxy.settings
           (clj->js m)
           (fn [] (.log js/console "#restored")))))
+
+(defn make-proxy-settings! [uri]
+  (let [u (re-seq #"(\w+)://(\w+):(\d+)" uri)
+        ss (first u)
+        n (assoc-in @proxy-settings [:value :rules :singleProxy]
+                    {:scheme (second ss)
+                     :host (nth ss 2)
+                     :port (Integer/parseInt (last ss))})]
+    (reset! proxy-settings n)))
 
 (defn on-proxy-run! [e]
   (let [s @proxy-switch]
@@ -93,7 +105,7 @@
       (do 
           (.log js/console "#popup:on-doc-ready")
           (switch-proxy!)
-          (set-link! "options_link" "options.html")
+          (set-link! "options_link" "resources/public/options.html")
           (set-link! "echo_link" "resources/public/echo.html")
           (load-proxy-uri "http://localhost:9001")
           (ev/listen! (by-id "proxy_run") :click on-proxy-run!)
@@ -101,4 +113,3 @@
       false)))
 
 (set! (.-onreadystatechange js/document) on-doc-ready)
-
