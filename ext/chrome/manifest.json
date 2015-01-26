@@ -3,15 +3,15 @@
   "name": "Owl",
   "version": "0.1.0",
   "description": "Web/Browser vulnerabilities scanner, reporter, If it is not working may be it is sleeping.",
-  "icons": {  "16": "icons/icon16.png",
-              "48": "icons/icon48.png",
-             "128": "icons/icon128.png" },
+  "icons": {  "16": "resources/public/icons/icon16.png",
+              "48": "resources/public/icons/icon48.png",
+             "128": "resources/public/icons/icon128.png" },
   "background": {
     "scripts": [
       "resources/public/js/main-dev.js"
     ]
   },
-  "options_page": "pages/options.html",
+  "options_page": "resources/public/options.html",
   "permissions": [
     "tabs",
     "bookmarks",
@@ -35,13 +35,13 @@
     },
     {
       "matches": ["file:///", "file:///*/"],
-      "css": ["content_scripts/file_urls.css"],
+      "css": ["resources/public/css/file_urls.css"],
       "run_at": "document_start",
       "all_frames": true
     }
   ],
   "browser_action": {
-    "default_icon": "icons/browser_action_disabled.png",
+    "default_icon": "resources/public/icons/browser_action_disabled.png",
     "default_popup": "resources/public/popup.html"
   }
 }
