@@ -21,6 +21,8 @@
                                :run ["pac_script"
                                      "fixed_servers"]})
 
+(declare on-proxy-error!)
+
 (defn set-link! [id uri]
   (set-attr! (by-id id) :href (.getURL js/chrome.runtime uri)))
 
@@ -47,20 +49,16 @@
               (let [c (js->clj d :keywordize-keys true)
                     m (:mode (:value c))
                     b (by-id "proxy_run")
-                    i (by-id "proxy_indicator")]
-                (.log js/console c)
-                (.log js/console m)
-                (set-value! (by-id "proxy_uri")
-                            (proxy-settings-to-uri c))
+                    u (by-id "proxy_uri")]
                 (if (some #(= m %) (:run proxy-types))
                   (do
-                    (set-text! i "&#x25f7;")
-                    (set-value! b "Stop")
-                    (reset! proxy-switch true))
+                    (reset! proxy-switch true)
+                    (set-value! u (proxy-settings-to-uri c))
+                    (set-value! b "Stop"))
                   (do
-                    (set-text! i "")
-                    (set-value! b "Run ")
-                    (reset! proxy-switch false))))))))
+                    (reset! proxy-switch false)
+                    (set-value! u (proxy-settings-to-uri @proxy-settings))
+                    (set-value! b "Run "))))))))
 
 (defn apply-proxy-settings! [e]
   (let [c (make-proxy-settings! (value (by-id "proxy_uri")))
@@ -68,14 +66,15 @@
     (.preventDefault e.evt)
     (.stopPropagation e.evt)
     (.log js/console d)
+    ;;(.. js/chrome -proxy -onProxyError (addListener on-proxy-error!))
     (.set js/chrome.proxy.settings
           d (fn [s]
               (.log js/console (js->clj s))))
     (.sendRequest js/chrome.extension {:type "clearError"})))
 
 (defn clear-proxy-settings! []
-  (let [s (clj->js {:scope "regular"})]
-    (.clear js/chrome.proxy.settings s
+  (let [d (clj->js {:scope "regular"})]
+    (.clear js/chrome.proxy.settings d
             (fn [] (.log js/console "#clear-proxy-settings")))))
 
 (defn on-proxy-run! [e]
@@ -86,6 +85,12 @@
       (do
         (apply-proxy-settings! e)))
     (switch-proxy!)))
+
+(defn on-proxy-error! [e]
+  (let [d (js->clj e :keywordize-keys true)]
+    (.log js/console (:fatal d))
+    (.log js/console (:error d))
+    (.log js/console (:details d))))
 
 (defn on-doc-ready []
   (when-let [ready-state (.-readyState js/document)]

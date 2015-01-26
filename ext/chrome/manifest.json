@@ -19,6 +19,7 @@
     "clipboardRead",
     "storage",
     "proxy",
+    "debugger",
     "webRequest",
     "<all_urls>"
   ],
