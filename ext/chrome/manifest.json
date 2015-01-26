@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Owl",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Web/Browser vulnerabilities scanner, reporter, If it is not working may be it is sleeping.",
   "icons": {  "16": "icons/icon16.png",
               "48": "icons/icon48.png",
