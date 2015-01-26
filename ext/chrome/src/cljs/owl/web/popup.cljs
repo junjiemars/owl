@@ -86,7 +86,7 @@
         n (assoc-in @proxy-settings [:value :rules :singleProxy]
                     {:scheme (second ss)
                      :host (nth ss 2)
-                     :port (Integer/parseInt (last ss))})]
+                     :port (js/parseInt (last ss))})]
     (reset! proxy-settings n)))
 
 (defn on-proxy-run! [e]
