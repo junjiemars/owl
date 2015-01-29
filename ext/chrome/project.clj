@@ -14,7 +14,7 @@
              :exclusions [org.clojure/clojure]]
             ]
   :hooks [leiningen.cljsbuild]
-  :profiles {:dev {:plugins []
+  :profiles {:dev {:plugins [[packer "0.1.0"]]
                    :dependencies []
                    :ring {:handler owl.web.routes/app
                           :init owl.web.routes/init
@@ -25,7 +25,13 @@
                                  :compiler {:output-to
                                             "resources/public/js/main-dev.js"
                                             :optimizations :whitespace
-                                            :pretty-print true}}]}}
+                                            :pretty-print true}}]}
+                   :pack {:mapping [{:source-paths ["manifest.json"
+                                                    #"resources/public/js/\w+\.js"
+                                                    #"resources/public/\w+\.html"]
+                                     :target-path "target/packed/src"}]
+                          :target {:type "crx"
+                                   :path "target/packed/"}}}
              :pro {:cljsbuild {:builds
                                [{:source-paths ["src/cljs"]
                                  :compiler {:output-to
