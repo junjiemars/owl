@@ -23,15 +23,14 @@
                    :cljsbuild {:builds
                                [{:source-paths ["src/brepl" "src/cljs"]
                                  :compiler {:output-to
-                                            "resources/public/js/main-dev.js"
+                                            "resources/public/js/main.js"
                                             :optimizations :whitespace
                                             :pretty-print true}}]}
                    :pack {:mapping [{:source-paths ["manifest.json"
-                                                    #"resources/public/js/\w+\.js"
-                                                    #"resources/public/\w+\.html"]
-                                     :target-path "target/packed/src"}]
+                                                    "resources/public"]
+                                     :target-path "target/packed"}]
                           :target {:type "crx"
-                                   :path "target/packed/"}}}
+                                   :path "target/"}}}
              :pro {:cljsbuild {:builds
                                [{:source-paths ["src/cljs"]
                                  :compiler {:output-to

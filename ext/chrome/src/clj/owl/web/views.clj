@@ -34,5 +34,5 @@ lein trampoline cljsbuild repl-listen"]
 > (load-namespace 'goog.dom)
 > (goog.dom.setTextContent (goog.dom.getElement \"fun\") \"I changed something....\") "]
       (run-clojurescript
-       "js/main-dev.js"
+       "js/main.js"
        "owl.web.brepl.init();")))
