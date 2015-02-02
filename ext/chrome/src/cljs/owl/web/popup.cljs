@@ -3,7 +3,8 @@
                        value
                        set-value!
                        set-attr!
-                       set-text!]])
+                       set-text!
+                       set-style!]])
   (:require [domina.events :as ev]))
 
 (defonce ^:export proxy-settings (atom {:value {:mode "fixed_servers"
@@ -54,10 +55,14 @@
                   (do
                     (reset! proxy-switch true)
                     (set-value! u (proxy-settings-to-uri c))
+                    (set-style! u :background-color "RoyalBlue")
+                    (set-style! u :color "White")
                     (set-value! b "Stop"))
                   (do
                     (reset! proxy-switch false)
                     (set-value! u (proxy-settings-to-uri @proxy-settings))
+                    (set-style! u :background-color "")
+                    (set-style! u :color "")
                     (set-value! b "Run "))))))))
 
 (defn apply-proxy-settings! [e]
