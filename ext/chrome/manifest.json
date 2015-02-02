@@ -3,15 +3,15 @@
   "name": "Owl",
   "version": "0.1.0",
   "description": "Web/Browser vulnerabilities scanner, reporter, If it is not working may be it is sleeping.",
-  "icons": {  "16": "resources/public/icons/icon16.png",
-              "48": "resources/public/icons/icon48.png",
-             "128": "resources/public/icons/icon128.png" },
+  "icons": {  "16": "icons/icon16.png",
+              "48": "icons/icon48.png",
+             "128": "icons/icon128.png" },
   "background": {
     "scripts": [
-      "resources/public/js/main-dev.js"
+      "js/main.js"
     ]
   },
-  "options_page": "resources/public/options.html",
+  "options_page": "options.html",
   "permissions": [
     "tabs",
     "bookmarks",
@@ -27,21 +27,21 @@
     {
       "matches": ["<all_urls>"],
       "js": [
-	"resources/public/js/main-dev.js"
+	"js/main.js"
       ],
-      "css": ["resources/public/css/cs.css"],
+      "css": ["css/cs.css"],
       "run_at": "document_start",
       "all_frames": true
     },
     {
       "matches": ["file:///", "file:///*/"],
-      "css": ["resources/public/css/file_urls.css"],
+      "css": ["css/file_urls.css"],
       "run_at": "document_start",
       "all_frames": true
     }
   ],
   "browser_action": {
-    "default_icon": "resources/public/icons/browser_action_disabled.png",
-    "default_popup": "resources/public/popup.html"
+    "default_icon": "icons/browser_action_disabled.png",
+    "default_popup": "popup.html"
   }
 }

@@ -12,9 +12,9 @@
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-ring "0.9.0" #_ ("0.8.13")
              :exclusions [org.clojure/clojure]]
-            ]
+            [org.clojars.junjiemars/lein-packer "0.1.0"]]
   :hooks [leiningen.cljsbuild]
-  :profiles {:dev {:plugins [[packer "0.1.0"]]
+  :profiles {:dev {
                    :dependencies []
                    :ring {:handler owl.web.routes/app
                           :init owl.web.routes/init
@@ -23,18 +23,24 @@
                    :cljsbuild {:builds
                                [{:source-paths ["src/brepl" "src/cljs"]
                                  :compiler {:output-to
-                                            "resources/public/js/main-dev.js"
+                                            "resources/public/js/main.js"
                                             :optimizations :whitespace
                                             :pretty-print true}}]}
                    :pack {:mapping [{:source-paths ["manifest.json"
-                                                    #"resources/public/js/\w+\.js"
-                                                    #"resources/public/\w+\.html"]
-                                     :target-path "target/packed/src"}]
+                                                    "resources/public"]
+                                     :target-path "target/packed"
+                                     :excludes [#"\w+\.\w+\~"]}]
                           :target {:type "crx"
-                                   :path "target/packed/"}}}
+                                   :path "target/packed"}}}
              :pro {:cljsbuild {:builds
                                [{:source-paths ["src/cljs"]
                                  :compiler {:output-to
                                             "resources/public/js/main.js"
                                             :optimizations :advanced
-                                            :pretty-print false}}]}}})
+                                            :pretty-print false}}]}
+                   :pack {:mapping [{:source-paths ["manifest.json"
+                                                    "resources/public"]
+                                     :target-path "target/packed"
+                                     :excludes [#"\w+\.\w+\~"]}]
+                          :target {:type "crx"
+                                   :path "target/packed"}}}})
