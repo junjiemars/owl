@@ -74,7 +74,7 @@
     ;;(.. js/chrome -proxy -onProxyError (addListener on-proxy-error!))
     (.set js/chrome.proxy.settings
           d (fn [s]
-              (.log js/console (js->clj s))))
+              (.log js/console (clj->js s))))
     (.sendRequest js/chrome.extension {:type "clearError"})))
 
 (defn clear-proxy-settings! []
