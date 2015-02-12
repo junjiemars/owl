@@ -28,13 +28,26 @@
   (set-attr! (by-id id) :href (.getURL js/chrome.runtime uri)))
 
 (defn make-proxy-settings! [uri]
-  (let [u (re-seq #"(\w+)://([\w\.]+):(\d+)" uri)
-        ss (first u)
-        n (assoc-in @proxy-settings [:value :rules :singleProxy]
-                    {:scheme (second ss)
-                     :host (nth ss 2)
-                     :port (js/parseInt (last ss))})]
-    (reset! proxy-settings n)))
+  (when-let [u (re-find #"(\w+)://([\w\.]+)(:(\d+))?(/(\w+\.\w+))?" uri)]
+    (let [p {:url (first u)
+             :scheme (nth u 1)
+             :host (nth u 2)
+             :port (nth u 4)
+             :has-wpad? (not (nil? (nth u 6)))}
+          s (if (:has-wpad? p)
+              (assoc-in @proxy-settings [:value]
+                        {:mode "pac_script"
+                         :pacScript {:url (:url p)
+                                     :mandatory true}})
+              (do
+                (.log js/console u)
+                (assoc-in @proxy-settings [:value]
+                          {:mode "fixed_servers"
+                           :rules {:singleProxy
+                                   {:scheme (:scheme p)
+                                    :host (:host p)
+                                    :port (js/parseInt (:port p))}}})))]
+      (reset! proxy-settings s))))
 
 (defn proxy-settings-to-uri [s]
   (let [u (:singleProxy (:rules (:value s)))

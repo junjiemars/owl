@@ -2,14 +2,14 @@
   :description "Owl web front"
   :source-paths ["src/clj" "src/cljs" "src/brepl"]
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2665"
+                 [org.clojure/clojurescript "0.0-2816"
                   :exclusions [org.apache.ant/ant]]
                  [compojure "1.2.1"]
                  [ring/ring-defaults "0.1.3"]
                  [hiccup "1.0.5"]
                  [domina "1.0.3"]
                  ]
-  :plugins [[lein-cljsbuild "1.0.3"]
+  :plugins [[lein-cljsbuild "1.0.4"]
             [lein-ring "0.9.0" #_ ("0.8.13")
              :exclusions [org.clojure/clojure]]
             [org.clojars.junjiemars/lein-packer "0.1.0"]]
