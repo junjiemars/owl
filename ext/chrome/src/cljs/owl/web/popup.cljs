@@ -7,11 +7,9 @@
                        set-style!]])
   (:require [domina.events :as ev]))
 
-(defonce ^:export proxy-settings (atom {:value {:mode "fixed_servers"
-                                                :rules {:singleProxy
-                                                        {:scheme "socks5"
-                                                         :host "localhost"
-                                                         :port 11032}}}
+(defonce ^:export proxy-settings (atom {:value {:mode ""
+                                                :rules {}
+                                                :pacScript {}}
                                         :scope "regular"}))
 (defonce ^:export proxy-switch (atom false))
 (defonce ^:export proxy-types {:raw [:auto_detect
@@ -21,7 +19,6 @@
                                      :system]
                                :run ["pac_script"
                                      "fixed_servers"]})
-
 (declare on-proxy-error!)
 
 (defn set-link! [id uri]
@@ -39,22 +36,24 @@
                         {:mode "pac_script"
                          :pacScript {:url (:url p)
                                      :mandatory true}})
-              (do
-                (.log js/console u)
-                (assoc-in @proxy-settings [:value]
-                          {:mode "fixed_servers"
-                           :rules {:singleProxy
-                                   {:scheme (:scheme p)
-                                    :host (:host p)
-                                    :port (js/parseInt (:port p))}}})))]
+              (assoc-in @proxy-settings [:value]
+                        {:mode "fixed_servers"
+                         :rules {:singleProxy
+                                 {:scheme (:scheme p)
+                                  :host (:host p)
+                                  :port (js/parseInt (:port p))}}}))]
       (reset! proxy-settings s))))
 
-(defn proxy-settings-to-uri [s]
-  (let [u (:singleProxy (:rules (:value s)))
-        uri (str (:scheme u) "://"
-                 (:host u) ":"
-                 (:port u))]
-    uri))
+(defn proxy-settings-to-url [s]
+  (when-let [p (:value s)]
+    (let [m (:mode p)]
+      (case m
+        "pac_script" (:url (:pacScript p))
+        "fixed_servers" (let [u (:singleProxy (:rules p))]
+                         (str (:scheme u)
+                              (:host u)
+                              (:port u)))
+        nil))))
 
 (defn switch-proxy! []
   (let [g (clj->js {:incognito false})]
@@ -67,13 +66,13 @@
                 (if (some #(= m %) (:run proxy-types))
                   (do
                     (reset! proxy-switch true)
-                    (set-value! u (proxy-settings-to-uri c))
+                    (set-value! u (proxy-settings-to-url c))
                     (set-style! u :background-color "RoyalBlue")
                     (set-style! u :color "White")
                     (set-value! b "Stop"))
                   (do
                     (reset! proxy-switch false)
-                    (set-value! u (proxy-settings-to-uri @proxy-settings))
+                    (set-value! u (proxy-settings-to-url @proxy-settings))
                     (set-style! u :background-color "")
                     (set-style! u :color "")
                     (set-value! b "Run "))))))))
