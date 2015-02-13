@@ -11,7 +11,6 @@
                                                 :rules {}
                                                 :pacScript {}}
                                         :scope "regular"}))
-(defonce ^:export proxy-switch (atom false))
 (defonce ^:export proxy-types {:raw [:auto_detect
                                      :pac_script
                                      :direct
@@ -19,12 +18,24 @@
                                      :system]
                                :run ["pac_script"
                                      "fixed_servers"]})
+(defonce ^:export proxy-ui {:div (by-id "popup")
+                            :button-run (by-id "proxy_run")
+                            :input-uri (by-id "proxy_uri")})
+
 (declare on-proxy-error!)
+
+(defn save-proxy-settings [v]
+  (.setItem js/localStorage :proxy_settings
+            (.stringify js/JSON (clj->js v))))
+
+(defn load-proxy-settings []
+  (js->clj (.parse js/JSON (.getItem js/localStorage :proxy_settings))
+           :keywordize-keys true))
 
 (defn set-link! [id uri]
   (set-attr! (by-id id) :href (.getURL js/chrome.runtime uri)))
 
-(defn make-proxy-settings! [uri]
+(defn url-to-proxy-settings! [uri]
   (when-let [u (re-find #"(\w+)://([\w\.]+)(:(\d+))?(/(\w+\.\w+))?" uri)]
     (let [p {:url (first u)
              :scheme (nth u 1)
@@ -42,7 +53,7 @@
                                  {:scheme (:scheme p)
                                   :host (:host p)
                                   :port (js/parseInt (:port p))}}}))]
-      (reset! proxy-settings s))))
+      (reset! proxy-settings (assoc-in s [:scope] "regular")))))
 
 (defn proxy-settings-to-url [s]
   (when-let [p (:value s)]
@@ -50,58 +61,62 @@
       (case m
         "pac_script" (:url (:pacScript p))
         "fixed_servers" (let [u (:singleProxy (:rules p))]
-                         (str (:scheme u)
-                              (:host u)
+                         (str (:scheme u) "://"
+                              (:host u) ":"
                               (:port u)))
         nil))))
 
-(defn switch-proxy! []
+(defn set-ui-state! [switch]
+  (let [run (:button-run proxy-ui)
+        url-style (:input-uri proxy-ui)
+        style {:input-background-color (if switch "RoyalBlue" "")
+               :input-font-color (if switch "White" "")
+               :button-text (if switch "Stop" "Run ")}]
+    (set-value! run (:button-text style))
+    (set-style! url-style :background-color (:input-background-color style))
+    (set-style! url-style :color (:input-font-color style))))
+
+(defn set-ui-url! [url]
+  (set-value! (:input-uri proxy-ui) url))
+
+(defn restore-proxy-settings! []
   (let [g (clj->js {:incognito false})]
     (.get js/chrome.proxy.settings
           g (fn [d]
               (let [c (js->clj d :keywordize-keys true)
                     m (:mode (:value c))
-                    b (by-id "proxy_run")
-                    u (by-id "proxy_uri")]
-                (if (some #(= m %) (:run proxy-types))
-                  (do
-                    (reset! proxy-switch true)
-                    (set-value! u (proxy-settings-to-url c))
-                    (set-style! u :background-color "RoyalBlue")
-                    (set-style! u :color "White")
-                    (set-value! b "Stop"))
-                  (do
-                    (reset! proxy-switch false)
-                    (set-value! u (proxy-settings-to-url @proxy-settings))
-                    (set-style! u :background-color "")
-                    (set-style! u :color "")
-                    (set-value! b "Run "))))))))
+                    b (:button-run proxy-ui)
+                    u (:input-uri proxy-ui)
+                    running? (some #(= m %) (:run proxy-types))]
+                (set-ui-state! running?)
+                (set-ui-url! (proxy-settings-to-url
+                              (if running?
+                                c
+                                (load-proxy-settings)))))))))
 
 (defn apply-proxy-settings! [e]
-  (let [c (make-proxy-settings! (value (by-id "proxy_uri")))
+  (let [c (url-to-proxy-settings! (value (:input-uri proxy-ui)))
         d (clj->js c)]
     (.preventDefault e.evt)
     (.stopPropagation e.evt)
-    (.log js/console d)
-    ;;(.. js/chrome -proxy -onProxyError (addListener on-proxy-error!))
+    (.. js/chrome -proxy -onProxyError (addListener on-proxy-error!))
     (.set js/chrome.proxy.settings
           d (fn [s]
-              (.log js/console (clj->js s))))
+              (.log js/console d)
+              (save-proxy-settings c)))
     (.sendRequest js/chrome.extension {:type "clearError"})))
 
 (defn clear-proxy-settings! []
   (let [d (clj->js {:scope "regular"})]
-    (.clear js/chrome.proxy.settings d
-            (fn [] (.log js/console "#clear-proxy-settings")))))
+    (.clear js/chrome.proxy.settings
+            d (fn [] (.log js/console "#clear-proxy-settings")))))
 
 (defn on-proxy-run! [e]
-  (let [s @proxy-switch]
-    (if (true? s)
-      (do
-        (clear-proxy-settings!))
-      (do
-        (apply-proxy-settings! e)))
-    (switch-proxy!)))
+  (let [running? (= "Stop" (value (:button-run proxy-ui)))]
+    (if running?
+      (clear-proxy-settings!)
+      (apply-proxy-settings! e))
+    (set-ui-state! (not running?))))
 
 (defn on-proxy-error! [e]
   (let [d (js->clj e :keywordize-keys true)]
@@ -111,15 +126,11 @@
 
 (defn on-doc-ready []
   (when-let [ready-state (.-readyState js/document)]
-    (if (and (= "complete" ready-state)
-             (by-id "popup"))
-      (do 
-          (.log js/console "#popup:on-doc-ready")
-          (set-link! "options_link" "resources/public/options.html")
-          (set-link! "echo_link" "resources/public/echo.html")
-          (switch-proxy!)
-          (ev/listen! (by-id "proxy_run") :click on-proxy-run!)
-        true)
-      false)))
+    (when (and (= "complete" ready-state)
+             (:div proxy-ui))
+      (set-link! "options_link" "resources/public/options.html")
+      (set-link! "echo_link" "resources/public/echo.html")
+      (restore-proxy-settings!)
+      (ev/listen! (:button-run proxy-ui) :click on-proxy-run!))))
 
 (set! (.-onreadystatechange js/document) on-doc-ready)
