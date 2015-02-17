@@ -12,7 +12,7 @@
   :plugins [[lein-cljsbuild "1.0.4"]
             [lein-ring "0.9.0" #_ ("0.8.13")
              :exclusions [org.clojure/clojure]]
-            [org.clojars.junjiemars/lein-packer "0.1.0"]]
+            [lein-packer "0.1.0"]]
   :hooks [leiningen.cljsbuild]
   :profiles {:dev {
                    :dependencies []
@@ -34,10 +34,12 @@
                                    :path "target/"}}}
              :pro {:cljsbuild {:builds
                                [{:source-paths ["src/cljs"]
-                                 :compiler {:output-to
+                                 :compiler {:externs ["externs/chrome_extensions.js"]
+                                            :output-to
                                             "resources/public/js/main.js"
                                             :optimizations :advanced
-                                            :pretty-print false}}]}
+                                            :pretty-print true
+                                            :warnings true}}]}
                    :pack {:mapping [{:source-paths ["manifest.json"
                                                     "resources/public"]
                                      :target-path "target/packed"

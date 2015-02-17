@@ -33,7 +33,7 @@
            :keywordize-keys true))
 
 (defn set-link! [id uri]
-  (set-attr! (by-id id) :href (.getURL js/chrome.runtime uri)))
+  (set-attr! (by-id id) :href (.getURL (.-runtime js/chrome) uri)))
 
 (defn url-to-proxy-settings! [uri]
   (when-let [u (re-find #"(\w+)://([\w\.]+)(:(\d+))?(/(\w+\.\w+))?" uri)]
@@ -128,8 +128,8 @@
   (when-let [ready-state (.-readyState js/document)]
     (when (and (= "complete" ready-state)
              (:div proxy-ui))
-      (set-link! "options_link" "resources/public/options.html")
-      (set-link! "echo_link" "resources/public/echo.html")
+      (set-link! "options_link" "options.html")
+      (set-link! "echo_link" "echo.html")
       (restore-proxy-settings!)
       (ev/listen! (:button-run proxy-ui) :click on-proxy-run!))))
 
