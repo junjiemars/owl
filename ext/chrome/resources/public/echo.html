@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Owl options</title>
+    <title>Owl echo</title>
     <style type="text/css" media="screen">
       body {
         font: 14px "DejaVu Sans", "Arial", sans-serif;
@@ -170,25 +170,24 @@
         border-top: 1px solid #eee;
       }
     </style>
-  <link rel="stylesheet" type="text/css" href="css/options.css" />
+  <link rel="stylesheet" type="text/css" href="css/echo.css" />
   <script type="text/javascript" src="js/main.js"></script>
   </head>
 
   <body>
     <div id="wrapper">
-      <header>Owl options</header>
+      <header>Owl echo</header>
       <table id="options">
         <tr>
           <td colspan="3">
-              Excluded URLs or patterns<br/>
+              Excluded URLs and keys<br/>
               <div class="help">
                 <div class="example">
                   <p>
                     To disable Owl on a site, use:<br/>
                     <tt>http*://mail.google.com/*</tt><br/>
                     This will <i>wholly disable</i> Owl on Gmail.<br/><br/>
-                    Or use:<br/>
-                    <tt>#"[http|https]://github.com[\w\.]*"</tt><br/>
+                    One entry per line.<br/>
                   </p>
                 </div>
               </div>

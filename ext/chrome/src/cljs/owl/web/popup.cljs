@@ -99,7 +99,7 @@
         d (clj->js c)]
     (.preventDefault e.evt)
     (.stopPropagation e.evt)
-    (.. js/chrome -proxy -onProxyError (addListener on-proxy-error!))
+    (.. js/chrome.proxy -onProxyError (addListener on-proxy-error!))
     (.set js/chrome.proxy.settings
           d (fn [s]
               (.log js/console d)
@@ -112,7 +112,7 @@
             d (fn [] (.log js/console "#clear-proxy-settings")))))
 
 (defn alert [msg close?]
-  (when-let [div (.createELement js/document "div")]
+  (when-let [div (.createElement js/document "div")]
     (.add (.-classList div) "overlay")
     (.setAttribute div "role" "alert")
     (set! (.-textContent div) msg)
@@ -134,10 +134,10 @@
     (set-ui-state! (not running?))))
 
 (defn on-proxy-error! [e]
-  (let [d (js->clj e :keywordize-keys true)]
-    (.log js/console (:fatal d))
-    (.log js/console (:error d))
-    (.log js/console (:details d))))
+  (when-let [d (js->clj e :keywordize-keys true)]
+    (.log js/console (.stringify js/JSON (clj->js e)))
+    ;(alert (str d) true)
+    ))
 
 (defn on-doc-ready []
   (when-let [ready-state (.-readyState js/document)]
