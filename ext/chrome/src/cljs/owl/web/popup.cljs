@@ -111,6 +111,21 @@
     (.clear js/chrome.proxy.settings
             d (fn [] (.log js/console "#clear-proxy-settings")))))
 
+(defn alert [msg close?]
+  (when-let [div (.createELement js/document "div")]
+    (.add (.-classList div) "overlay")
+    (.setAttribute div "role" "alert")
+    (set! (.-textContent div) msg)
+    (.appendChild (.-body js/document) div)
+    (js/setTimeout (fn []
+                     (.add (.-classList div) "visible"))
+                   10)
+    (js/setTimeout (fn []
+                     (if close?
+                       (.remove (.-classList div) "visible")
+                       (.close js/window)))
+                   4000)))
+
 (defn on-proxy-run! [e]
   (let [running? (= "Stop" (value (:button-run proxy-ui)))]
     (if running?

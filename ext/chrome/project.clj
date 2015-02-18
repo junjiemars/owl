@@ -22,7 +22,8 @@
                           :repl-options {:repl-listen-port 9000}}
                    :cljsbuild {:builds
                                [{:source-paths ["src/brepl" "src/cljs"]
-                                 :compiler {:output-to
+                                 :compiler {:externs ["externs/chrome_extensions.js"]
+                                            :output-to
                                             "resources/public/js/main.js"
                                             :optimizations :whitespace
                                             :pretty-print true}}]}
