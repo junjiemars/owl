@@ -3,9 +3,12 @@
   "name": "Owl",
   "version": "0.1.0",
   "description": "Lightweight chrome proxy, If it is not working may be it is sleeping.",
-  "icons": {  "16": "icons/icon16.png",
-              "48": "icons/icon48.png",
-             "128": "icons/icon128.png" },
+  "icons": {  "16": "icons/owl-16.png",
+              "32": "icons/owl-32.png",
+              "48": "icons/owl-48.png",
+              "128": "icons/owl-128.png",
+              "256": "icons/owl-256.png"
+           },
   "background": {
     "scripts": [
       "js/main.js"
@@ -40,7 +43,7 @@
     }
   ],
   "browser_action": {
-    "default_icon": "icons/browser_action_disabled.png",
+    "default_icon": "icons/owl-256.png",
     "default_popup": "popup.html"
   }
 }
