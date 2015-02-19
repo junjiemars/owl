@@ -144,7 +144,7 @@
     (when (and (= "complete" ready-state)
              (:div proxy-ui))
       (set-link! "options_link" "options.html")
-      (set-link! "echo_link" "echo.html")
+      ;(set-link! "echo_link" "echo.html")
       (restore-proxy-settings!)
       (ev/listen! (:button-run proxy-ui) :click on-proxy-run!))))
 

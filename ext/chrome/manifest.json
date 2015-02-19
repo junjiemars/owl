@@ -2,6 +2,8 @@
   "manifest_version": 2,
   "name": "Owl",
   "version": "0.1.0",
+  "author": "junjiemars@gmail.com",
+  "short_name": "lightweight chrome proxy",
   "description": "Lightweight chrome proxy, If it is not working may be it is sleeping.",
   "icons": {  "16": "icons/owl-16.png",
               "32": "icons/owl-32.png",
@@ -16,13 +18,7 @@
   },
   "options_page": "options.html",
   "permissions": [
-    "tabs",
-    "bookmarks",
-    "history",
-    "clipboardRead",
-    "storage",
     "proxy",
-    "webRequest",
     "<all_urls>"
   ],
   "content_scripts": [
@@ -37,7 +33,7 @@
     },
     {
       "matches": ["file:///", "file:///*/"],
-      "css": ["css/file_urls.css"],
+      "css": ["css/fu.css"],
       "run_at": "document_start",
       "all_frames": true
     }

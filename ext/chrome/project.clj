@@ -39,7 +39,7 @@
                                             :output-to
                                             "resources/public/js/main.js"
                                             :optimizations :advanced
-                                            :pretty-print true
+                                            :pretty-print false
                                             :warnings true}}]}
                    :pack {:mapping [{:source-paths ["manifest.json"
                                                     "resources/public"]
