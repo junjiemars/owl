@@ -13,7 +13,7 @@
             [lein-ring "0.9.0" #_ ("0.8.13")
              :exclusions [org.clojure/clojure]]
             [lein-packer "0.1.0"]]
-  :hooks [leiningen.cljsbuild]
+  :hooks [leiningen.cljsbuild leiningen.packer]
   :profiles {:dev {
                    :dependencies []
                    :ring {:handler owl.web.routes/app
@@ -27,7 +27,8 @@
                                             :output-to
                                             "resources/public/js/main.js"
                                             :optimizations :whitespace
-                                            :pretty-print true}}]}
+                                            :pretty-print true}
+                                 :notify-command ["lein" "packer" "once"]}]}
                    :pack {:mapping [{:source-paths ["manifest.json"
                                                     "resources/public"]
                                      :target-path "target/packed"
