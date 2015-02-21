@@ -19,8 +19,9 @@
                                :run ["pac_script"
                                      "fixed_servers"]})
 (defonce ^:export proxy-ui {:div (by-id "popup")
-                            :button-run (by-id "proxy_run")
-                            :input-uri (by-id "proxy_uri")})
+                            :button-run (by-id "uri_button")
+                            :input-uri (by-id "uri_input")
+                            :link-options (by-id "options_link")})
 
 (declare on-proxy-error!)
 
@@ -31,9 +32,6 @@
 (defn load-proxy-settings []
   (js->clj (.parse js/JSON (.getItem js/localStorage :proxy_settings))
            :keywordize-keys true))
-
-(defn set-link! [id uri]
-  (set-attr! (by-id id) :href (.getURL (.-runtime js/chrome) uri)))
 
 (defn url-to-proxy-settings! [uri]
   (when-let [u (re-find #"(\w+)://([\w\.]+)(:(\d+))?(/(\w+\.\w+))?" uri)]
@@ -143,8 +141,8 @@
   (when-let [ready-state (.-readyState js/document)]
     (when (and (= "complete" ready-state)
              (:div proxy-ui))
-      (set-link! "options_link" "options.html")
-      ;(set-link! "echo_link" "echo.html")
+      (set-attr! (:link-options proxy-ui)
+                 :href (.getURL js/chrome.runtime "options.html"))
       (restore-proxy-settings!)
       (ev/listen! (:button-run proxy-ui) :click on-proxy-run!))))
 

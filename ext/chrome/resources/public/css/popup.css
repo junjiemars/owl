@@ -8,24 +8,24 @@
   flex-basis: auto;
 }
 
-#popup_links ul {
+#links ul {
   list-style: none;
   padding: 0px;
 }
 
-#popup_links a, #popup_links a:active, #popup_links a:visited {
+#links a, #links a:active, #links a:visited {
   color: #3F6EC2;
   display: block;
   border-top: 1px solid #DDDDDD;
   padding: 3px;
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
-#popup_links a:hover {
+#links a:hover {
   background: #EEEEEE;
 }
 
-#popup_links ul li {
+#links ul li {
   float: left;
 }
 
