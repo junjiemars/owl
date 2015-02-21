@@ -1,67 +1,17 @@
 <html>
   <head>
-    <style>
-      * {
-        margin: 0px;
-        padding: 0px;
-      }
-
-      #popup { width: 500px; }
-
-      #popup_proxy {
-        padding: 10px;
-      }
-
-      #popupInput {
-        width: 330px;
-      }
-
-      #excludeConfirm {
-        display: inline-block;
-        width: 18px;
-        height: 13px;
-        background: url(../icons/check.png) 3px 2px no-repeat;
-        display: none;
-      }
-
-      #proxy_run { margin-left: 10px; }
-
-      #popup_links ul {
-        list-style: none;
-      }
-
-      #popup_links a, #popup_links a:active, #popup_links a:visited {
-        color: #3F6EC2;
-        display: block;
-        border-top: 1px solid #DDDDDD;
-        padding: 3px;
-        padding-left: 10px;
-      }
-
-      #popup_links a:hover {
-        background: #EEEEEE;
-      }
-
-      #popup_links ul li {
-        float: left;
-      }
-      
-      #options_link #echo_link {
-        font-family : "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-        font-size: 12px;
-      }
-    </style>
     <link href="css/popup.css" type="text/css" rel="stylesheet">
+    <link href="css/alert.css" type="text/css" rel="stylesheet">
   </head>
   <body>
-    <div id="popup">
-      <div id="popup_proxy">
+    <div id="popup" class="box">
+      <div id="popup_proxy" class="item">
 	<label for="proxy_uri">Proxy URL:</label>
 	<input id="proxy_uri" type="text" />
         <input id="proxy_run" type="button" value="Run " />
       </div>
 
-      <div id="popup_links">
+      <div id="popup_links" class="item">
         <ul>
           <li><a id="options_link" target="_blank">Options</a></li>
 	  <!--<li><a id="echo_link" target="_black">Echo</a></li>-->

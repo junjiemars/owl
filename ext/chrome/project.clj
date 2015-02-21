@@ -22,7 +22,8 @@
                           :repl-options {:repl-listen-port 9000}}
                    :cljsbuild {:builds
                                [{:source-paths ["src/brepl" "src/cljs"]
-                                 :compiler {:externs ["externs/chrome_extensions.js"]
+                                 :compiler {:externs
+                                            ["externs/chrome_extensions.js"]
                                             :output-to
                                             "resources/public/js/main.js"
                                             :optimizations :whitespace
@@ -35,7 +36,8 @@
                                    :path "target/"}}}
              :pro {:cljsbuild {:builds
                                [{:source-paths ["src/cljs"]
-                                 :compiler {:externs ["externs/chrome_extensions.js"]
+                                 :compiler {:externs
+                                            ["externs/chrome_extensions.js"]
                                             :output-to
                                             "resources/public/js/main.js"
                                             :optimizations :advanced
