@@ -28,7 +28,8 @@
                                             "resources/public/js/main.js"
                                             :optimizations :whitespace
                                             :pretty-print true}
-                                 :notify-command ["lein" "packer" "once"]}]}
+                                 :notify-command ["lein" "packer" "once"]
+                                 }]}
                    :pack {:mapping [{:source-paths ["manifest.json"
                                                     "resources/public"]
                                      :target-path "target/packed"
