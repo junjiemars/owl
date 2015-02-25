@@ -4,202 +4,29 @@
     <link rel="stylesheet" type="text/css" href="css/options.css" />
     <script type="text/javascript" src="js/main.js"></script>
   </head>
-
-  <body>
-    <div id="wrapper">
-      <header>Owl options</header>
-      <table id="options">
-        <tr>
-          <td colspan="3">
-              Excluded URLs or patterns<br/>
-              <div class="help">
-                <div class="example">
-                  <p>
-                    To disable Owl on a site, use:<br/>
-                    <tt>http*://mail.google.com/*</tt><br/>
-                    This will <i>wholly disable</i> Owl on Gmail.<br/><br/>
-                    Or use:<br/>
-                    <tt>#"[http|https]://github.com[\w\.]*"</tt><br/>
-                  </p>
-                </div>
-              </div>
-              <!-- Hack: fix a minimum size for the text area (below) so that it is
-                   not too much smaller than its help text (above). -->
-              <!-- FIXME:
-                   This text area should really be broken out into an array
-                   of separate inputs.  However, the whole options page really
-                   needs a workover, so I'm leaving it like this, for now
-                   (Steve, 23 Aug, 14). -->
-              <textarea id="excludedUrls"
-                        style="min-height:180px"
-                        placeholder="<local>,192.168.1.1/16, .example.com">
-              </textarea>
-          </td>
-        </tr>
-        <tbody id='advancedOptions'>
-          <tr>
-            <td class="caption">Custom key<br/>mappings</td>
-            <td id="mappingsHelp" verticalAlign="top">
-              <div class="help">
-                <div class="example">
-                  <!-- TODO(ilya/philc): Expand this and style it better. -->
-                  Enter commands to remap your keys. Available commands:<br/>
-                  <pre id="exampleKeyMapping">
-map j scrollDown
-unmap j
-unmapAll
-" this is a comment
-# this is also a comment</pre>
-                  <a href="#" id="showCommands">Show available commands.</a>
-                </div>
-              </div>
-              <textarea id="keyMappings" type="text"></textarea>
-            </td>
-          </tr>
-          <tr>
-            <td class="caption">CSS for link hints</td>
-            <td verticalAlign="top">
-              <div class="help">
-                <div class="example">
-                  The CSS used to style the characters next to each link hint.<br/><br/>
-                  Note: these styles are used in addition to and take precedence over Owl's
-                  default styles.
-                </div>
-              </div>
-              <textarea id="userDefinedLinkHintCss" class="code" type="text"></textarea>
-            </td>
-          </tr>
-          <tr>
-            <td class="caption">Characters used<br/> for link hints</td>
-            <td verticalAlign="top">
-                <div class="help">
-                  <div class="example">
-                    The characters placed next to each link after typing "F" to enter link hinting mode.
-                  </div>
-                </div>
-                <input id="linkHintCharacters" type="text" />
-            </td>
-          </tr>
-          <tr>
-            <td class="caption">Numbers used<br/> for filtered link hints</td>
-            <td verticalAlign="top">
-                <div class="help">
-                  <div class="example">
-                    The numbers placed next to each link after typing "F" to enter link hinting mode.
-                  </div>
-                </div>
-                <input id="linkHintNumbers" type="text" />
-            </td>
-          </tr>
-          <tr>
-            <td class="caption"></td>
-            <td verticalAlign="top" class="booleanOption">
-              <div class="help">
-                <div class="example">
-                  After typing "F" to enter link hinting mode, this option lets you type the text of a link
-                  to select it.
-                </div>
-              </div>
-              <label>
-                <input id="filterLinkHints" type="checkbox"/>
-                Use the link's name and numbers for link hint filtering
-              </label>
-            </td>
-          </tr>
-          <tr>
-            <td class="caption"></td>
-            <td verticalAlign="top" class="booleanOption">
-              <div class="help">
-                <div class="example">
-                  The Heads-Up Display appears when typing into text boxes.
-                </div>
-              </div>
-              <label>
-                <input id="hideHud" type="checkbox"/>
-                Hide the Heads Up Display (HUD)
-              </label>
-            </td>
-          </tr>
-          <tr>
-            <td class="caption"></td>
-            <td verticalAlign="top" class="booleanOption">
-              <div class="help">
-                <div class="example">
-                  Switch back to plain find mode by using the <code>\R</code> escape sequence.
-                </div>
-              </div>
-              <label>
-                <input id="regexFindMode" type="checkbox"/>
-                Treat find queries as regular expressions.
-              </label>
-            </td>
-          </tr>
-          <tr>
-            <td class="caption">Previous Patterns</td>
-            <td verticalAlign="top">
-                <div class="help">
-                  <div class="example">
-                    Owl will match against these patterns when using the "navigate to the previous page"
-                    command.
-                  </div>
-                </div>
-                <input id="previousPatterns" type="text" />
-            </td>
-          </tr>
-          <tr>
-            <td class="caption">Next Patterns</td>
-            <td verticalAlign="top">
-                <div class="help">
-                  <div class="example">
-                    Owl will match against these patterns when using the "navigate to the next page" command.
-                  </div>
-                </div>
-                <input id="nextPatterns" type="text" />
-            </td>
-          </tr>
-          <tr>
-            <td class="caption">Default Search<br/>Engine</td>
-            <td verticalAlign="top">
-                <div class="help">
-                  <div class="example">
-                    The search engine which is used when searching from the Vomnibar
-                    (e.g.: "http://duckduckgo.com/?q=").
-                  </div>
-                </div>
-                <input id="searchUrl" type="text" />
-            </td>
-          </tr>
-          <tr>
-            <td class="caption">Custom Search<br/>Engines</td>
-            <td verticalAlign="top">
-                <div class="help">
-                  <div class="example">
-                    Use this to add shortcuts for your common search engines when using the Vomnibar.<br/><br/>
-                    The format is:<br/>
-                    <pre>your-keyword: http://the-site.com/?q=%s</pre>
-                    %s will be replaced with your search term.<br/>
-                    Lines which start with "#" are comments.
-                  </div>
-                </div>
-                <textarea id="searchEngines"></textarea>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div id="buttonsPanel">
-        <a href="#" id="advancedOptionsLink">Show advanced options&hellip;</a>
-        <div id="buttonContainer">
-          <button id="restoreSettings">Restore to Defaults</button>
-          <button id="saveOptions" disabled="true">Save Options</button>
-        </div>
+  <body class="vbox">
+    <header>
+      Owl options
+    </header>
+    <section class="hbox">
+      <div class="caption">
+        Excluded URLs or patterns
       </div>
-
-      <br/>
-
-      <footer id="showHelpDialogMessage">
-        To view all available shortcuts, type <strong>?</strong> to show the Owl help dialog.
-      </footer>
-    </div>
+      <textarea class="urls">xYz</textarea>  
+      <div class="desc">
+        To disable Owl on a site, use:<br/>
+        <tt>http*://mail.google.com/*</tt><br/>
+        This will <i>wholly disable</i> Owl on Gmail.<br/><br/>
+        Or use:<br/>
+        <tt>#"[http|https]://github.com[\w\.]*"</tt><br/>
+      </div>  
+      <div class="options">
+        <button id="restore">Restore to Defaults</button>
+        <button id="save" disabled="true">Save Options</button>
+      </div>
+    </section>
+    <footer>
+      To view all available shortcuts, type <strong>?</strong> to show the Owl help dialog.
+    </footer>
   </body>
 </html>
