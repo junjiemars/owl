@@ -1,21 +1,18 @@
 .vbox {
   display: flex;
   flex-flow: column nowrap;
-  width: 600px;
-  margin: auto;
-  justify-content: center;
+  width: 100%;
+  text-align: left;
+  margin: auto 20%;
+  justify-content: flex-start;
 }
 
 .hbox {
   display: flex;
   flex-flow: row wrap;
-  margin: auto;
-  margin-top: 20px;
 }
 
 header {
-  width: 200px;
-  text-align: left;
   font-size: 18px;
   font-weight: normal;
   border-bottom: 1px solid #eee;
@@ -23,9 +20,10 @@ header {
 }
 .caption {
   flex: 1 100%;
+  margin-top: 20px;
 }
 .urls  {
-  flex: 1 50%;
+  flex: 1 40%;
   margin-top: 10px;
 }
 .desc {
