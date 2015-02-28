@@ -2,17 +2,16 @@
   <head>
     <title>Owl options</title>
     <link rel="stylesheet" type="text/css" href="css/options.css" />
-    <script type="text/javascript" src="js/main.js"></script>
   </head>
   <body class="vbox">
     <header>
       Owl options
     </header>
-    <section class="hbox">
+    <section class="hbox" id="options">
       <div class="caption">
         Excluded URLs or patterns
       </div>
-      <textarea class="urls" placeholder="xYz"></textarea>  
+      <textarea id="excluded_urls" class="urls"></textarea>  
       <div class="desc">
         To disable Owl on a site, use<br/>
         <code>
@@ -42,12 +41,13 @@
         </tt>
       </div>  
       <div class="options">
-        <button id="restore">Restore to Defaults</button>
-        <button id="save" disabled="true">Save Options</button>
+        <button id="restore_button">Restore to Defaults</button>
+        <button id="save_button">Save Options</button>
       </div>
     </section>
     <footer>
       To view all available shortcuts, type <strong>?</strong> to show the Owl help dialog.
     </footer>
+    <script type="text/javascript" src="js/main.js"></script>
   </body>
 </html>
