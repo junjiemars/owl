@@ -10,11 +10,13 @@
 .hbox {
   display: flex;
   flex-flow: row wrap;
+  width: 70%;
 }
 
 header {
   font-size: 18px;
   font-weight: normal;
+  width: 70%;
   border-bottom: 1px solid #eee;
   padding: 20px 0 15px 0;
 }
@@ -28,17 +30,21 @@ header {
 }
 .desc {
   flex: 1 30%;
-  margin-top: 10px;
-  margin-left: 10px;
-  font-size: 12px;
+  margin: 10px 0 0 10px;
   line-height: 16px;
   color: #979ca0;
-  margin-left: 20px;
+  font-size: 0.9rem;
+  font-family: "Source Code Pro",sans-serif;
 }
 .options {
-  flex: 1 30%;
+  flex: 1 40%;
   margin-top: 10px;
 }
 footer {
   margin-top: 10px;
+}
+
+code {
+  color: #080;
+
 }
