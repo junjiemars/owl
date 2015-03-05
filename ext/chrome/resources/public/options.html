@@ -15,26 +15,21 @@
       <div class="desc">
         To disable Owl on a site, use<br/>
         <code>
-          [<em>&lt;scheme&gt;</em>://]
-          <em>&lt;host-pattern&gt;</em>
-          [:<em>&lt;port&gt;</em>]
+          [<em>&lt;scheme&gt;</em>://]<em>&lt;host-pattern&gt;</em>[:<em>&lt;port&gt;</em>]
         </code>
         <tt>
           to match all hostnames, A leading <code>"."</code>
           is interpreted as a <code>"*."</code>, eg:
           "*foo.com", "https://x.*.y.z:99"; Or
         </tt><br/><br/>
-        <code>[<em>&lt;scheme&gt;</em>://]
-          <em>&lt;ip-literal&gt;</em>[:
-          <em>&lt;port&gt;</em>]
+        <code>[<em>&lt;scheme&gt;</em>://]<em>&lt;ip-literal&gt;</em>[:<em>&lt;port&gt;</em>]
         </code>
         <tt>
           to match <i>IP</i> address literals, eg:
-          "127.0.1", "[0:0::1]", "http://[::1]:99"; Or
+          "127.0.0.1", "[0:0::1]", "http://[::1]:99"; Or
         </tt><br/><br/>
         <code>
-          <em>&lt;ip-literal&gt;</em>/
-          <em>&lt;prefix-length-in-bits&gt;</em>
+          <em>&lt;ip-literal&gt;</em>/<em>&lt;prefix-length-in-bits&gt;</em>
         </code>
         <tt>to match an <i>IP</i> literal within the given range, eg:
           "192.168.1.1/16", "fefe:13::abc/33"
