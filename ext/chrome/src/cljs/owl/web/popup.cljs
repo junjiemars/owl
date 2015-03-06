@@ -30,8 +30,8 @@
             (.stringify js/JSON (clj->js v))))
 
 (defn load-proxy-settings []
-  (js->clj (.parse js/JSON (.getItem js/localStorage :proxy_settings))
-           :keywordize-keys true))
+  (when-let [i (.getItem js/localStorage :proxy_settings)]
+    (js->clj (.parse js/JSON i) :keywordize-keys true)))
 
 (defn url-to-proxy-settings! [uri]
   (when-let [u (re-find #"(\w+)://([\w\.]+)(:(\d+))?(/(\w+\.\w+))?" uri)]

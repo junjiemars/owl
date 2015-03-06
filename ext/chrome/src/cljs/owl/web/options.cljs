@@ -19,8 +19,9 @@
 
 (defn on-save! [e]
   (when-let [u (:urls options-ui)]
-    (let [s (str/split (value u) #"[ \n]")]
-      (.log js/console s))))
+    (let [b (str/split (value u) #"[,; \n]")
+          s (vec (remove str/blank? b))]
+      (.log js/console (clj->js s)))))
 
 (ev/listen! (:restore options-ui) :click on-restore!)
 (ev/listen! (:save options-ui) :click on-save!)
