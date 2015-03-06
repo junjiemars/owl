@@ -19,6 +19,14 @@
       (do (.log js/console "please complete the form")
           false))))
 
+(defn save-item [k v]
+  (.setItem js/localStorage k
+            (.stringify js/JSON (clj->js v))))
+
+(defn load-item [k]
+  (when-let [i (.getItem js/localStorage k)]
+    (js->clj (.parse js/JSON i) :keywordize-keys true)))
+
 (defn ^:export init []
   (if (and js/document
            (.-getElementById js/document))

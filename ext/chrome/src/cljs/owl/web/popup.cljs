@@ -5,7 +5,8 @@
                        set-attr!
                        set-text!
                        set-style!]])
-  (:require [domina.events :as ev]))
+  (:require [domina.events :as ev]
+            [owl.web.core :as c]))
 
 (defonce ^:export proxy-settings (atom {:value {:mode ""
                                                 :rules {}
@@ -25,14 +26,6 @@
 
 (declare on-proxy-error!)
 
-(defn save-proxy-settings [v]
-  (.setItem js/localStorage :proxy_settings
-            (.stringify js/JSON (clj->js v))))
-
-(defn load-proxy-settings []
-  (when-let [i (.getItem js/localStorage :proxy_settings)]
-    (js->clj (.parse js/JSON i) :keywordize-keys true)))
-
 (defn url-to-proxy-settings! [uri]
   (when-let [u (re-find #"(\w+)://([\w\.]+)(:(\d+))?(/(\w+\.\w+))?" uri)]
     (let [p {:url (first u)
@@ -50,8 +43,9 @@
                          :rules {:singleProxy
                                  {:scheme (:scheme p)
                                   :host (:host p)
-                                  :port (js/parseInt (:port p))}}}))]
-      (reset! proxy-settings (assoc-in s [:scope] "regular")))))
+                                  :port (js/parseInt (:port p))}
+                                 :bypassList []}}))]
+      (assoc-in s [:scope] "regular"))))
 
 (defn proxy-settings-to-url [s]
   (when-let [p (:value s)]
@@ -90,18 +84,15 @@
                 (set-ui-url! (proxy-settings-to-url
                               (if running?
                                 c
-                                (load-proxy-settings)))))))))
+                                (c/load-item :proxy_settings)))))))))
 
-(defn apply-proxy-settings! [e]
-  (let [c (url-to-proxy-settings! (value (:input-uri proxy-ui)))
-        d (clj->js c)]
-    (.preventDefault e.evt)
-    (.stopPropagation e.evt)
+(defn apply-proxy-settings! [settings]
+  (when-let [s (clj->js settings)]
     (.. js/chrome.proxy -onProxyError (addListener on-proxy-error!))
     (.set js/chrome.proxy.settings
-          d (fn [s]
-              (.log js/console d)
-              (save-proxy-settings c)))
+          s (fn [d]
+              (reset! proxy-settings settings)
+              (c/save-item :proxy_settings s)))
     (.sendRequest js/chrome.extension {:type "clearError"})))
 
 (defn clear-proxy-settings! []
@@ -124,11 +115,27 @@
                        (.close js/window)))
                    4000)))
 
+(defn make-proxy-settings
+  ([] (when-let [u (value (:input-uri proxy-ui))]
+        (let [s (url-to-proxy-settings! u)
+              bypass? (:rules (:value s))
+              o (when bypass? (c/load-item :proxy_options))]
+          (if (and  bypass? o)
+            (assoc-in s [:value :rules :bypassList] o)
+            s))))
+  ([options] (when-let [s (c/load-item :proxy_settings)]
+               (let [bypass? (:rules (:value s))]
+                 (when bypass?
+                   (assoc-in s [:value :rules :bypassList] options))))))
+
 (defn on-proxy-run! [e]
   (let [running? (= "Stop" (value (:button-run proxy-ui)))]
     (if running?
       (clear-proxy-settings!)
-      (apply-proxy-settings! e))
+      (do
+        (.preventDefault e.evt)
+        (.stopPropagation e.evt)
+        (apply-proxy-settings! (make-proxy-settings))))
     (set-ui-state! (not running?))))
 
 (defn on-proxy-error! [e]
