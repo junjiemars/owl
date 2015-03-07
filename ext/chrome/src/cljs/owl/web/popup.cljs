@@ -88,12 +88,13 @@
 
 (defn apply-proxy-settings! [settings]
   (when-let [s (clj->js settings)]
-    (.. js/chrome.proxy -onProxyError (addListener on-proxy-error!))
-    (.set js/chrome.proxy.settings
-          s (fn [d]
-              (reset! proxy-settings settings)
-              (c/save-item :proxy_settings s)))
-    (.sendRequest js/chrome.extension {:type "clearError"})))
+    (when (not settings @proxy-settings)
+      (.. js/chrome.proxy -onProxyError (addListener on-proxy-error!))
+      (.set js/chrome.proxy.settings
+            s (fn [d]
+                (reset! proxy-settings settings)
+                (c/save-item :proxy_settings s)))
+      (.sendRequest js/chrome.extension {:type "clearError"}))))
 
 (defn clear-proxy-settings! []
   (let [d (clj->js {:scope "regular"})]
