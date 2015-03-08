@@ -27,9 +27,9 @@
 (set-value! (:urls options-ui)
             (apply str (interpose "; " (c/load-item :proxy_options))))
 
-
 (ev/listen! (:save options-ui) :click on-save!)
 
-(.log js/console "#options loaded")
+;(.log js/console "#options loaded")
+
 
 
