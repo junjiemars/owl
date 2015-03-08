@@ -13,7 +13,7 @@
             [lein-ring "0.9.0" #_ ("0.8.13")
              :exclusions [org.clojure/clojure]]
             [lein-packer "0.1.0"]]
-  :hooks [leiningen.cljsbuild leiningen.packer]
+  :hooks [leiningen.cljsbuild]
   :profiles {:dev {
                    :dependencies []
                    :ring {:handler owl.web.routes/app

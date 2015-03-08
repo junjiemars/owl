@@ -19,7 +19,10 @@
     (let [b (str/split (value u) #"[,; \n]")
           s (vec (remove str/blank? b))]
       (c/save-item :proxy_options s)
-      (p/apply-proxy-settings! (p/make-proxy-settings s)))))
+      (p/query-proxy-settings?
+       (fn [settings running?]
+         (when running?
+           (p/apply-proxy-settings! (p/make-proxy-settings s))))))))
 
 (set-value! (:urls options-ui)
             (apply str (interpose "; " (c/load-item :proxy_options))))
