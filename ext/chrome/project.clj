@@ -2,7 +2,7 @@
   :description "Owl web front"
   :source-paths ["src/clj" "src/cljs" "src/brepl"]
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.8.40"
+                 [org.clojure/clojurescript "1.8.51"
                   :exclusions [org.apache.ant/ant]]
                  [compojure "1.5.0"]
                  [ring/ring-defaults "0.2.0"]
@@ -39,6 +39,7 @@
                                [{:source-paths ["src/cljs"]
                                  :compiler {:externs
                                             ["externs/chrome_extensions.js"]
+                                            :closure-output-charset "US-ASCII"
                                             :output-to
                                             "resources/public/js/main.js"
                                             :optimizations :advanced
