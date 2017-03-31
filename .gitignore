@@ -22,3 +22,4 @@ ext/chrome/pom.xml
 .repl/
 
 
+**/*.log

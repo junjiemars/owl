@@ -1,53 +1,35 @@
-(defproject owl-web "0.0.1"
-  :description "Owl web front"
-  :source-paths ["src/clj" "src/cljs" "src/brepl"]
+(defproject owl-web "0.1.0"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.8.51"
-                  :exclusions [org.apache.ant/ant]]
-                 [compojure "1.5.0"]
-                 [ring/ring-defaults "0.2.0"]
-                 [hiccup "1.0.5"]
-                 [domina "1.0.3"]]
-  :plugins [[lein-cljsbuild "1.1.3"]
-            [lein-ring "0.9.7"
-             :exclusions [org.clojure/clojure]]
-            [lein-packer "0.1.0"]]
-  :hooks [leiningen.cljsbuild]
-  :profiles {:dev {
-                   :dependencies []
-                   :ring {:handler owl.web.routes/app
-                          :init owl.web.routes/init
-                          :destroy owl.web.routes/destroy
-                          :repl-options {:repl-listen-port 9000}}
-                   :cljsbuild {:builds
-                               [{:source-paths ["src/brepl" "src/cljs"]
-                                 :compiler {:externs
-                                            ["externs/chrome_extensions.js"]
-                                            :output-to
-                                            "resources/public/js/main.js"
-                                            :optimizations :whitespace
-                                            :pretty-print true}
-                                 :notify-command ["lein" "packer" "once"]
-                                 }]}
-                   :pack {:mapping [{:source-paths ["manifest.json"
-                                                    "resources/public"]
-                                     :target-path "target/dev"
-                                     :excludes [#"\w+\.\w+\~"]}]
-                          :target {:type "crx"
-                                   :path "target/dev"}}}
-             :pro {:cljsbuild {:builds
-                               [{:source-paths ["src/cljs"]
-                                 :compiler {:externs
-                                            ["externs/chrome_extensions.js"]
-                                            :closure-output-charset "US-ASCII"
-                                            :output-to
-                                            "resources/public/js/main.js"
-                                            :optimizations :advanced
-                                            :pretty-print false
-                                            :warnings true}}]}
-                   :pack {:mapping [{:source-paths ["manifest.json"
-                                                    "resources/public"]
-                                     :target-path "target/pro"
-                                     :excludes [#"\w+\.\w+\~"]}]
-                          :target {:type "crx"
-                                   :path "target/pro"}}}})
+                 [org.clojure/clojurescript "1.9.229"]]
+  :plugins [[lein-figwheel "0.5.9"]]
+  :clean-targets ^{:protect false} ["resources/public/js"
+                                    "resources/public/js/owl.js"
+                                    :target-path]
+  :source-paths ["src"]
+  :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.9"]
+                                  [com.cemerick/piggieback "0.2.1"]
+                                  [domina "1.0.3"]]
+                   :source-paths ["src"]}}
+  :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+  :cljsbuild {
+              :builds [{:id "dev"
+                        :figwheel true
+                        :source-paths ["src"]
+                        :compiler {:main "owl.web.core"
+                                   :externs
+                                   ["external/chrome_extensions.js"]
+                                   :asset-path "js/out"
+                                   :output-to "resources/public/js/owl.js"
+                                   :output-dir "resources/public/js/out"
+                                   :optimizations :none
+                                   }}
+                       {:id "pro"
+                        :source-paths ["src"]
+                        :compiler {:externs
+                                   ["external/chrome_extensions.js"]
+                                   :output-to "resources/public/js/owl.js"
+                                   :optimizations :advanced
+                                   :pretty-print false}}]
+              }
+  :figwheel {:css-dirs ["resources/public/css"]
+             :open-file-command "emacsclient"})
