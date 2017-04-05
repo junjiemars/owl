@@ -26,9 +26,10 @@
   (when-let [i (.getItem js/localStorage k)]
     (js->clj (.parse js/JSON i) :keywordize-keys true)))
 
-(defn ^:export init []
-  (if (and js/document
-           (.-getElementById js/document))
-    (let [login (by-id "login_form")]
-      (ev/listen! (by-id "submit") :click validate-form))))
+(comment
+  (defn ^:export init []
+    (if (and js/document
+             (.-getElementById js/document))
+      (let [login (by-id "login_form")]
+        (ev/listen! (by-id "submit") :click validate-form)))))
       ;(set! (.-onsubmit login) validate-form))))
