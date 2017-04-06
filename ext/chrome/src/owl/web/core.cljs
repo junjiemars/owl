@@ -5,8 +5,9 @@
 (defn say-hello []
   (js/alert "Hello, ClojureScript!"))
 
-(defn add-some-numbers [& numbers]
-  (apply + numbers))
+(defn square [n]
+  (* n n))
+
 
 (defn validate-form []
   (let [email (by-id "email") 

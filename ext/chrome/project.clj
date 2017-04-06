@@ -22,6 +22,8 @@
                                         :output-dir "resources/public/js/out"
                                         :optimizations :none
                                         }
+                             :figwheel {:open-urls ["http://localhost:3449/popup.html"]
+                                        }
                              }
                        :pro {:source-paths ["src"]
                              :compiler {:externs
