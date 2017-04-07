@@ -2,8 +2,7 @@
   
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.473"]
-                 [domina "1.0.3"] 
-                 ]
+                 [domina "1.0.3"]]
   
   :plugins [[lein-figwheel "0.5.9"]
             [lein-cljsbuild "1.1.5"]
@@ -16,13 +15,12 @@
                                   [com.cemerick/piggieback "0.2.1"]]
                    :cljsbuild
                    {:builds [{:id "dev"
-                              :source-paths ["src"]
+                              :source-paths ["src" "externs"]
                               :figwheel {
                                          :open-urls ["http://localhost:3449/popup.html"]
                                          }
                               :compiler {:main "owl.web.core"
-                                         :externs
-                                         ["externs/chrome_extensions.js"]
+                                         :externs ["chrome_extensions.js"]
                                          :asset-path "js/out"
                                          :output-to "resources/public/js/owl.js"
                                          :output-dir "resources/public/js/out"
@@ -32,15 +30,14 @@
                    }
              :pro {:cljsbuild
                    {:builds
-                    [{:source-paths ["src"]
-                      :compiler {
-                                 :externs
-                                 ["externs/chrome_extensions.js"]
+                    [{:source-paths ["src" "externs"]
+                      :compiler {:externs ["chrome_extensions.js"]
                                  :output-to "resources/public/js/owl.js"
                                  ;; :closure-output-charset "US-ASCII"
                                  :optimizations :advanced
                                  :pretty-print false}
                       }]}
+                   
                    :pack {:mapping [{:source-paths ["manifest.json"
                                                     "resources/public"]
                                      :target-path "target/pro"
@@ -50,8 +47,10 @@
              }
   
   
-  :figwheel {:css-dirs ["resources/public/css"]
+  :figwheel {
+             :css-dirs ["resources/public/css"]
              :open-file-command "emacsclient"
+             :server-logfile ".figwheel.log"
              }
   
   :aliases {"release"     ["with-profile" "pro"
