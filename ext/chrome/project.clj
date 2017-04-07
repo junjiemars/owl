@@ -6,7 +6,7 @@
   
   :plugins [[lein-figwheel "0.5.9"]
             [lein-cljsbuild "1.1.5"]
-            [lein-packer "0.1.1"]]
+            [lein-packer "0.1.0"]]
   
   :clean-targets ^{:protect false} ["resources/public/js"
                                     "resources/public/js/owl.js"
