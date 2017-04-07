@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Owl",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "junjiemars@gmail.com",
   "short_name": "lightweight chrome proxy",
   "description": "Lightweight chrome proxy, If it is not working may be it is sleeping.",

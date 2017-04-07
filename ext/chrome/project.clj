@@ -1,7 +1,10 @@
 (defproject owl-web "0.1.0"
+  
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.229"]
-                 [domina "1.0.3"]]
+                 [org.clojure/clojurescript "1.9.473"]
+                 [domina "1.0.3"] 
+                 ]
+  
   :plugins [[lein-figwheel "0.5.9"]
             [lein-cljsbuild "1.1.5"]
             [lein-packer "0.1.1"]]
@@ -30,9 +33,11 @@
              :pro {:cljsbuild
                    {:builds
                     [{:source-paths ["src"]
-                      :compiler {:externs
+                      :compiler {
+                                 :externs
                                  ["external/chrome_extensions.js"]
                                  :output-to "resources/public/js/owl.js"
+                                 :closure-output-charset "US-ASCII"
                                  :optimizations :advanced
                                  :pretty-print false}
                       }]}
@@ -45,10 +50,16 @@
              }
   
   
-  :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
-  
   :figwheel {:css-dirs ["resources/public/css"]
              :open-file-command "emacsclient"
              }
+  
+  :aliases {"release"     ["with-profile" "pro"
+                           "do"
+                           ["clean"]
+                           ["cljsbuild" "once"]]
+            "package"     ["with-profile" "pro"
+                           "do"
+                           ["packer" "once"]]}
   )
 

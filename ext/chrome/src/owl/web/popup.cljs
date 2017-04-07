@@ -139,13 +139,13 @@
 (defn on-proxy-error! [e]
   (when-let [d (js->clj e :keywordize-keys true)]
     (.log js/console (.stringify js/JSON (clj->js e)))
-    ;(alert (str d) true)
+                                        ;(alert (str d) true)
     ))
 
 (defn on-doc-ready []
   (when-let [ready-state (.-readyState js/document)]
     (when (and (= "complete" ready-state)
-             (:div proxy-ui))
+               (:div proxy-ui))
       (set-attr! (:link-options proxy-ui)
                  :href (.getURL js/chrome.runtime "options.html"))
       (query-proxy-settings? (fn [settings running?]
