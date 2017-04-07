@@ -22,7 +22,7 @@
                                          }
                               :compiler {:main "owl.web.core"
                                          :externs
-                                         ["external/chrome_extensions.js"]
+                                         ["externs/chrome_extensions.js"]
                                          :asset-path "js/out"
                                          :output-to "resources/public/js/owl.js"
                                          :output-dir "resources/public/js/out"
@@ -35,9 +35,9 @@
                     [{:source-paths ["src"]
                       :compiler {
                                  :externs
-                                 ["external/chrome_extensions.js"]
+                                 ["externs/chrome_extensions.js"]
                                  :output-to "resources/public/js/owl.js"
-                                 :closure-output-charset "US-ASCII"
+                                 ;; :closure-output-charset "US-ASCII"
                                  :optimizations :advanced
                                  :pretty-print false}
                       }]}
