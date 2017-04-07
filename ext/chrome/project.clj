@@ -53,14 +53,14 @@
              :server-logfile ".figwheel.log"
              }
   
-  :aliases {"release"     ["with-profile" "pro"
-                           "do"
-                           ["clean"]
-                           ["cljsbuild" "once"]]
-            "package"     ["with-profile" "pro"
-                           "do"
-                           ["clean"]
-                           ["cljsbuild" "once"]
-                           ["packer" "once"]]}
+  :aliases {"pro"     ["with-profile" "pro"
+                       "do"
+                       ["clean"]
+                       ["cljsbuild" "once"]]
+            "pack"     ["with-profile" "pro"
+                        "do"
+                        ["clean"]
+                        ["cljsbuild" "once"]
+                        ["packer" "once"]]}
   )
 
