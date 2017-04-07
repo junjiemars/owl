@@ -3,7 +3,9 @@
                  [org.clojure/clojurescript "1.9.229"]
                  [domina "1.0.3"]]
   :plugins [[lein-figwheel "0.5.9"]
-            [lein-cljsbuild "1.1.5"]]
+            [lein-cljsbuild "1.1.5"]
+            [lein-packer "0.1.1"]]
+  
   :clean-targets ^{:protect false} ["resources/public/js"
                                     "resources/public/js/owl.js"
                                     :target-path]
@@ -33,7 +35,13 @@
                                  :output-to "resources/public/js/owl.js"
                                  :optimizations :advanced
                                  :pretty-print false}
-                      }]}}
+                      }]}
+                   :pack {:mapping [{:source-paths ["manifest.json"
+                                                    "resources/public"]
+                                     :target-path "target/pro"
+                                     :excludes [#"\w+\.\w+\~"]}]
+                          :target {:type "crx"
+                                   :path "target/pro"}}}
              }
   
   
