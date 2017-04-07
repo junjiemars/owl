@@ -59,6 +59,8 @@
                            ["cljsbuild" "once"]]
             "package"     ["with-profile" "pro"
                            "do"
+                           ["clean"]
+                           ["cljsbuild" "once"]
                            ["packer" "once"]]}
   )
 
